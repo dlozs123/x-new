@@ -1,13 +1,13 @@
 // 图标相关：URL 生成和首页用户渲染
 function getIconUrl(userName) {
-    // 替换特殊字符 * : / 为 _ 
+    // 替换特殊字符 * : / 为 _
     let sanitizedName = userName.replace(/[*:/]/g, '_');
     return `https://r4.dlozs.top/images/${sanitizedName}.jpg`;
 }
 
 // 手动分类：用户复制粘贴这里
 const userCategories = {
-    "A芙兰蕾咪": [
+    "芙兰蕾咪": [
         "franruhika",
         "crerp",
         "Haruki50501",
@@ -733,6 +733,7 @@ const userCategories = {
     ]
 };
 
+
 async function loadUsers() {
     const data = await getTweetData();
     const users = {};
@@ -749,13 +750,13 @@ async function loadUsers() {
     Object.keys(userCategories).forEach(category => {
         const categorySection = document.createElement('div');
         categorySection.className = 'category-section';
+
         const title = document.createElement('h2');
-        title.textContent = `${category} `;
+        title.textContent = category;
         categorySection.appendChild(title);
 
         const grid = document.createElement('div');
         grid.className = 'user-grid';
-        categorySection.appendChild(grid);
 
         const categoryUsers = userCategories[category];
         categoryUsers.forEach(screenName => {
@@ -774,25 +775,29 @@ async function loadUsers() {
             }
         });
 
-        // 只添加有用户的类别
         if (grid.children.length > 0) {
+            categorySection.appendChild(grid);
             userList.appendChild(categorySection);
         }
     });
 
     // 添加其他用户（未分类）
-    const otherSection = document.createElement('div');
-    otherSection.className = 'category-section';
-    const otherTitle = document.createElement('h2');
-    otherTitle.textContent = '其他用户';
-    otherSection.appendChild(otherTitle);
+    const otherUsers = Object.keys(users).filter(
+        screenName => !Object.values(userCategories).flat().includes(screenName)
+    );
 
-    const otherGrid = document.createElement('div');
-    otherGrid.className = 'user-grid';
-    otherSection.appendChild(otherGrid);
+    if (otherUsers.length > 0) {
+        const otherSection = document.createElement('div');
+        otherSection.className = 'category-section';
 
-    Object.keys(users).forEach(screenName => {
-        if (!Object.values(userCategories).flat().includes(screenName)) {
+        const otherTitle = document.createElement('h2');
+        otherTitle.textContent = '其他用户';
+        otherSection.appendChild(otherTitle);
+
+        const otherGrid = document.createElement('div');
+        otherGrid.className = 'user-grid';
+
+        otherUsers.forEach(screenName => {
             const user = users[screenName];
             const card = document.createElement('div');
             card.className = 'user-card';
@@ -804,11 +809,9 @@ async function loadUsers() {
                 window.location.href = `user.html?screen_name=${screenName}`;
             };
             otherGrid.appendChild(card);
-        }
-    });
+        });
 
-    if (otherGrid.children.length > 0) {
+        otherSection.appendChild(otherGrid);
         userList.appendChild(otherSection);
     }
-
 }
