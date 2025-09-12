@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推文归档 - 用户页面</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>推文归档 - <span id="user-name"></span></h1>
+    </header>
+    <div id="tweet-list" class="tweet-container"></div>
+    <script src="common.js"></script>
+    <script src="icon.js"></script>
+    <script src="media.js"></script>
+    <script>
+        loadUserTweets();
+    </script>
+</body>
+</html>
