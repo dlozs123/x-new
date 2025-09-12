@@ -750,7 +750,7 @@ async function loadUsers() {
         const categorySection = document.createElement('div');
         categorySection.className = 'category-section';
         const title = document.createElement('h2');
-        title.textContent = `${category} 类用户`;
+        title.textContent = `${category} `;
         categorySection.appendChild(title);
 
         const grid = document.createElement('div');
@@ -810,4 +810,5 @@ async function loadUsers() {
     if (otherGrid.children.length > 0) {
         userList.appendChild(otherSection);
     }
+
 }
