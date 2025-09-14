@@ -19,6 +19,7 @@ async function getTweetData() {
     return window.tweetData;
 }
 
+// 日期格式化
 function formatDate(createdAt) {
     const date = new Date(createdAt);
     return date.toLocaleString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });

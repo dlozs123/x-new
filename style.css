@@ -1,143 +1,3 @@
-/* 添加以下样式到现有CSS文件中 */
-
-/* 页面容器 */
-.page-container {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-/* 侧边栏样式 */
-.sidebar {
-    width: 250px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #e1e8ed;
-    padding: 15px;
-    transition: all 0.3s ease;
-    overflow-y: auto;
-    max-height: calc(100vh - 60px);
-    position: sticky;
-    top: 60px;
-    align-self: flex-start;
-}
-
-.sidebar.collapsed {
-    width: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e1e8ed;
-}
-
-.sidebar-header h2 {
-    margin: 0;
-    font-size: 1.2em;
-    color: #1da1f2;
-}
-
-.toggle-btn {
-    background: none;
-    border: none;
-    font-size: 1.2em;
-    cursor: pointer;
-    color: #657786;
-    padding: 5px;
-}
-
-.toggle-btn:hover {
-    color: #1da1f2;
-}
-
-.year-filter {
-    margin-bottom: 15px;
-}
-
-.select-all {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 4px;
-}
-
-.select-all:hover {
-    background-color: #e8f5fe;
-}
-
-.year-list {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.year-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 5px;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    cursor: pointer;
-}
-
-.year-item:hover {
-    background-color: #e8f5fe;
-}
-
-.year-item input {
-    margin-right: 8px;
-}
-
-/* 主内容区域调整 */
-.tweet-container {
-    flex: 1;
-    padding: 20px;
-    transition: margin-left 0.3s ease;
-}
-
-.sidebar.collapsed ~ .tweet-container {
-    margin-left: 0;
-}
-
-/* 移动设备适配 */
-@media (max-width: 768px) {
-    .page-container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        max-height: none;
-        position: static;
-        border-right: none;
-        border-bottom: 1px solid #e1e8ed;
-    }
-    
-    .sidebar.collapsed {
-        width: 100%;
-        height: 0;
-        padding: 0;
-    }
-    
-    .sidebar-header {
-        position: sticky;
-        top: 0;
-        background-color: #f8f9fa;
-        z-index: 10;
-    }
-    
-    .year-list {
-        max-height: 200px;
-    }
-}
-
-/* 现有样式保持不变 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -199,6 +59,12 @@ header {
 }
 
 /* 推文容器部分（保持不变） */
+.tweet-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .tweet {
     background-color: white;
     border: 1px solid #ddd;
