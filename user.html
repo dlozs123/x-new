@@ -11,112 +11,11 @@
         <h1>推文归档 - <span id="user-name"></span></h1>
     </header>
     <div id="tweet-list" class="tweet-container"></div>
-    <div id="loading" style="text-align:center; padding:20px; display:none;">加载中...</div>
-
     <script src="common.js"></script>
     <script src="icon.js"></script>
     <script src="media.js"></script>
     <script>
-        // 懒加载逻辑
-        async function loadUserTweets(batchSize = 20) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const screenName = urlParams.get('screen_name');
-            if (!screenName) return;
-
-            document.getElementById('user-name').textContent = `@${screenName}`;
-
-            const data = await getTweetData();
-            let userTweets = data.filter(tweet => tweet.screen_name === screenName);
-            userTweets.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-            let offset = 0;
-            const tweetList = document.getElementById('tweet-list');
-            const loadingDiv = document.getElementById('loading');
-
-            // 渲染一批推文
-            function renderBatch() {
-                const batch = userTweets.slice(offset, offset + batchSize);
-                batch.forEach(tweet => {
-                    const tweetDiv = renderTweet(tweet);
-                    tweetList.appendChild(tweetDiv);
-                });
-                offset += batchSize;
-                if (offset >= userTweets.length) {
-                    window.removeEventListener('scroll', handleScroll);
-                    loadingDiv.style.display = 'none';
-                }
-            }
-
-            // 生成单条推文 HTML
-            function renderTweet(tweet) {
-                const tweetDiv = document.createElement('div');
-                tweetDiv.className = 'tweet';
-                const formattedTime = formatDate(tweet.created_at);
-
-                let mediaHtml = '';
-                if (tweet.media && tweet.media.length > 0) {
-                    mediaHtml = '<div class="tweet-media">';
-                    tweet.media.forEach((mediaItem, index) => {
-                        const mediaUrl = getMediaUrl(tweet.screen_name, tweet.id, index, tweet.created_at, mediaItem);
-                        if (mediaItem.type === 'video' || mediaItem.type === 'animated_gif') {
-                            const loopAttr = mediaItem.type === 'animated_gif' ? 'loop' : '';
-                            mediaHtml += `
-                                <video controls ${loopAttr} width="100%" alt="Tweet video ${index + 1}">
-                                    <source src="${mediaUrl}" type="video/mp4">
-                                    您的浏览器不支持视频标签。
-                                </video>
-                            `;
-                        } else {
-                            mediaHtml += `<img src="${mediaUrl}" alt="Tweet media ${index + 1}" class="clickable-image">`;
-                        }
-                    });
-                    mediaHtml += '</div>';
-                }
-
-                tweetDiv.innerHTML = `
-                    <div class="tweet-header">
-                        <img src="${getIconUrl(tweet.name)}" alt="${tweet.name}'s avatar" class="tweet-avatar">
-                        <div>
-                            <span class="tweet-user">${tweet.name}</span>
-                            <span class="tweet-screenname">@${tweet.screen_name}</span>
-                            <div class="tweet-time">${formattedTime}</div>
-                        </div>
-                    </div>
-                    <div class="tweet-text">${tweet.full_text}</div>
-                    ${mediaHtml}
-                    <div class="tweet-actions">
-                        <span class="action-btn reply" data-tweet-id="${tweet.id}">💬 ${tweet.reply_count}</span>
-                        <span class="action-btn retweet" data-tweet-id="${tweet.id}">🔄 ${tweet.retweet_count}</span>
-                        <span class="action-btn like" data-tweet-id="${tweet.id}">❤️ ${tweet.favorite_count}</span>
-                    </div>
-                `;
-
-                tweetDiv.querySelectorAll('.action-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        btn.classList.toggle('active');
-                    });
-                });
-
-                return tweetDiv;
-            }
-
-            // 滚动触发加载更多
-            function handleScroll() {
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-                    loadingDiv.style.display = 'block';
-                    setTimeout(() => {
-                        renderBatch();
-                        setupImageModal(); // 确保新图片可点击
-                        loadingDiv.style.display = 'none';
-                    }, 100); // 延迟渲染，防止卡顿
-                }
-            }
-
-            // 初始化
-            renderBatch();
-            window.addEventListener('scroll', handleScroll);
-            setupImageModal();
-        }
+        loadUserTweets();
     </script>
 </body>
 </html>

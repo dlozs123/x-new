@@ -19,6 +19,10 @@ function getMediaUrl(screenName, tweetId, index, createdAt, mediaItem) {
     return `https://r3.dlozs.top/${screenName}_${tweetId}_${mediaItem.type}_${index + 1}_${dateStr}.${ext}`;
 }
 
+let BATCH_SIZE = 10; // 每次加载推文数量
+let loadedCount = 0;
+let userTweetsGlobal = []; // 全局保存该用户推文
+
 async function loadUserTweets() {
     const urlParams = new URLSearchParams(window.location.search);
     const screenName = urlParams.get('screen_name');
@@ -27,11 +31,21 @@ async function loadUserTweets() {
     document.getElementById('user-name').textContent = `@${screenName}`;
 
     const data = await getTweetData();
-    const userTweets = data.filter(tweet => tweet.screen_name === screenName);
-    userTweets.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // 最新在上
+    userTweetsGlobal = data.filter(tweet => tweet.screen_name === screenName);
+    userTweetsGlobal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // 最新在上
 
+    loadedCount = 0;
+    document.getElementById('tweet-list').innerHTML = '';
+    loadNextBatch(); // 首次加载
+    setupScrollLoad(); // 设置滚动懒加载
+}
+
+// 加载下一批推文
+function loadNextBatch() {
     const tweetList = document.getElementById('tweet-list');
-    userTweets.forEach(tweet => {
+    const nextBatch = userTweetsGlobal.slice(loadedCount, loadedCount + BATCH_SIZE);
+
+    nextBatch.forEach(tweet => {
         const tweetDiv = document.createElement('div');
         tweetDiv.className = 'tweet';
         const formattedTime = formatDate(tweet.created_at);
@@ -74,7 +88,6 @@ async function loadUserTweets() {
             </div>
         `;
 
-        // 添加简单互动
         tweetDiv.querySelectorAll('.action-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 btn.classList.toggle('active');
@@ -84,8 +97,19 @@ async function loadUserTweets() {
         tweetList.appendChild(tweetDiv);
     });
 
-    // 添加图片 modal 功能
-    setupImageModal();
+    loadedCount += nextBatch.length;
+    setupImageModal(); // 每次加载新图片也需要绑定 modal
+}
+
+// 设置滚动懒加载
+function setupScrollLoad() {
+    window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+            if (loadedCount < userTweetsGlobal.length) {
+                loadNextBatch();
+            }
+        }
+    });
 }
 
 // 设置图片点击弹出 modal
