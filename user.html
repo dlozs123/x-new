@@ -10,17 +10,28 @@
     <header>
         <h1>推文归档 - <span id="user-name"></span></h1>
     </header>
+    
     <div class="page-container">
-        <!-- 左侧边栏 -->
-        <aside id="sidebar" class="sidebar">
-            <button id="toggle-sidebar">☰ 年份筛选</button>
-            <div id="year-filters" class="year-filters"></div>
-        </aside>
-
-        <!-- 主体推文区域 -->
-        <main id="tweet-list" class="tweet-container"></main>
+        <!-- 侧边栏 -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h2>年份筛选</h2>
+                <button id="toggle-sidebar" class="toggle-btn">◀</button>
+            </div>
+            <div class="sidebar-content">
+                <div class="year-filter">
+                    <label class="select-all">
+                        <input type="checkbox" id="select-all-years"> 全选/全不选
+                    </label>
+                    <div id="year-list" class="year-list"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div id="tweet-list" class="tweet-container"></div>
     </div>
-
+    
     <script src="common.js"></script>
     <script src="icon.js"></script>
     <script src="media.js"></script>
