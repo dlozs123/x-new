@@ -10,7 +10,17 @@
     <header>
         <h1>推文归档 - <span id="user-name"></span></h1>
     </header>
-    <div id="tweet-list" class="tweet-container"></div>
+    <div class="page-container">
+        <!-- 左侧边栏 -->
+        <aside id="sidebar" class="sidebar">
+            <button id="toggle-sidebar">☰ 年份筛选</button>
+            <div id="year-filters" class="year-filters"></div>
+        </aside>
+
+        <!-- 主体推文区域 -->
+        <main id="tweet-list" class="tweet-container"></main>
+    </div>
+
     <script src="common.js"></script>
     <script src="icon.js"></script>
     <script src="media.js"></script>
