@@ -139,17 +139,17 @@ function setupImageModal() {
         });
     }
 
-    // 绑定图片点击事件，每次加载新推文后调用
+    // 绑定新加载的图片事件
     const images = document.querySelectorAll('.tweet-media .clickable-image');
     images.forEach(img => {
-        // 防止重复绑定
         if (!img.dataset.modalBound) {
-            img.dataset.modalBound = "true";
+            img.dataset.modalBound = "true"; // 标记已绑定
             img.addEventListener('click', () => {
                 const modalImg = document.getElementById('modal-image');
                 modalImg.src = img.src;
-                modal.style.display = 'flex'; // flex 保证居中
+                modal.style.display = 'flex'; // 点击才显示
             });
         }
     });
 }
+
