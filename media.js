@@ -32,7 +32,7 @@ async function loadUserTweets() {
 
     const data = await getTweetData();
     userTweetsGlobal = data.filter(tweet => tweet.screen_name === screenName);
-    userTweetsGlobal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // 最新在上
+    userTweetsGlobal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     loadedCount = 0;
     document.getElementById('tweet-list').innerHTML = '';
@@ -98,7 +98,7 @@ function loadNextBatch() {
     });
 
     loadedCount += nextBatch.length;
-    setupImageModal(); // 每次加载新图片也需要绑定 modal
+    setupImageModal(); // 每次加载新图片绑定 modal
 }
 
 // 设置滚动懒加载
@@ -114,7 +114,7 @@ function setupScrollLoad() {
 
 // 设置图片点击弹出 modal
 function setupImageModal() {
-    const images = document.querySelectorAll('.tweet-media .clickable-image');
+    // 创建 modal（只创建一次）
     let modal = document.getElementById('image-modal');
     if (!modal) {
         modal = document.createElement('div');
@@ -139,10 +139,17 @@ function setupImageModal() {
         });
     }
 
+    // 绑定图片点击事件，每次加载新推文后调用
+    const images = document.querySelectorAll('.tweet-media .clickable-image');
     images.forEach(img => {
-        img.addEventListener('click', () => {
-            document.getElementById('modal-image').src = img.src;
-            modal.style.display = 'block';
-        });
+        // 防止重复绑定
+        if (!img.dataset.modalBound) {
+            img.dataset.modalBound = "true";
+            img.addEventListener('click', () => {
+                const modalImg = document.getElementById('modal-image');
+                modalImg.src = img.src;
+                modal.style.display = 'flex'; // flex 保证居中
+            });
+        }
     });
 }
