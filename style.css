@@ -58,7 +58,7 @@ header {
     object-fit: cover;
 }
 
-/* 推文容器部分（保持不变） */
+/* 推文容器部分 */
 .tweet-container {
     max-width: 600px;
     margin: 0 auto;
@@ -135,7 +135,7 @@ header {
 
 /* 图片 modal 样式 */
 .modal {
-    display: none;
+    display: none; /* 确保默认隐藏 */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -143,9 +143,6 @@ header {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.9);
-
-    /* 使用 flex 居中 */
-    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -155,7 +152,7 @@ header {
     max-width: 100%;
     width: auto;
     height: auto;
-    object-fit: contain; /* 保持纵横比 */
+    object-fit: contain;
     display: block;
 }
 
@@ -175,7 +172,6 @@ header {
     color: #bbb;
     text-decoration: none;
 }
-
 
 @media (max-width: 600px) {
     .user-grid {

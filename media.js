@@ -26,18 +26,26 @@ let userTweetsGlobal = []; // 全局保存该用户推文
 async function loadUserTweets() {
     const urlParams = new URLSearchParams(window.location.search);
     const screenName = urlParams.get('screen_name');
-    if (!screenName) return;
+    if (!screenName) {
+        console.error('No screen_name provided in URL');
+        return;
+    }
 
     document.getElementById('user-name').textContent = `@${screenName}`;
 
-    const data = await getTweetData();
-    userTweetsGlobal = data.filter(tweet => tweet.screen_name === screenName);
-    userTweetsGlobal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    try {
+        const data = await getTweetData();
+        userTweetsGlobal = data.filter(tweet => tweet.screen_name === screenName);
+        userTweetsGlobal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-    loadedCount = 0;
-    document.getElementById('tweet-list').innerHTML = '';
-    loadNextBatch(); // 首次加载
-    setupScrollLoad(); // 设置滚动懒加载
+        loadedCount = 0;
+        document.getElementById('tweet-list').innerHTML = '';
+        loadNextBatch(); // 首次加载
+        setupScrollLoad(); // 设置滚动懒加载
+    } catch (error) {
+        console.error('Failed to load tweets:', error);
+        document.getElementById('tweet-list').innerHTML = '<p>加载推文失败，请稍后重试。</p>';
+    }
 }
 
 // 加载下一批推文
@@ -98,7 +106,10 @@ function loadNextBatch() {
     });
 
     loadedCount += nextBatch.length;
-    setupImageModal(); // 每次加载新图片绑定 modal
+    // 只有当有图片时才调用 setupImageModal
+    if (document.querySelectorAll('.tweet-media .clickable-image').length > 0) {
+        setupImageModal();
+    }
 }
 
 // 设置滚动懒加载
@@ -114,7 +125,6 @@ function setupScrollLoad() {
 
 // 设置图片点击弹出 modal
 function setupImageModal() {
-    // 创建 modal（只创建一次）
     let modal = document.getElementById('image-modal');
     if (!modal) {
         modal = document.createElement('div');
@@ -125,13 +135,12 @@ function setupImageModal() {
             <img class="modal-content" id="modal-image">
         `;
         document.body.appendChild(modal);
+        modal.style.display = 'none'; // 显式隐藏 modal
 
-        // 关闭 modal
         modal.querySelector('.close').addEventListener('click', () => {
             modal.style.display = 'none';
         });
 
-        // 点击 modal 外部关闭
         window.addEventListener('click', (event) => {
             if (event.target === modal) {
                 modal.style.display = 'none';
@@ -139,17 +148,15 @@ function setupImageModal() {
         });
     }
 
-    // 绑定新加载的图片事件
     const images = document.querySelectorAll('.tweet-media .clickable-image');
     images.forEach(img => {
         if (!img.dataset.modalBound) {
-            img.dataset.modalBound = "true"; // 标记已绑定
+            img.dataset.modalBound = "true";
             img.addEventListener('click', () => {
                 const modalImg = document.getElementById('modal-image');
                 modalImg.src = img.src;
-                modal.style.display = 'flex'; // 点击才显示
+                modal.style.display = 'flex';
             });
         }
     });
 }
-
