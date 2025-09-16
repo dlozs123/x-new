@@ -733,6 +733,22 @@ const userCategories = {
     ]
 };
 
+// 懒加载核心：IntersectionObserver
+function setupLazyLoading() {
+    const lazyImages = document.querySelectorAll("img[data-src]");
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src; // 真正加载图片
+                img.removeAttribute("data-src");
+                obs.unobserve(img);
+            }
+        });
+    }, { rootMargin: "50px" }); // 提前 50px 加载
+
+    lazyImages.forEach(img => observer.observe(img));
+}
 
 async function loadUsers() {
     const data = await getTweetData();
@@ -765,7 +781,7 @@ async function loadUsers() {
                 const card = document.createElement('div');
                 card.className = 'user-card';
                 card.innerHTML = `
-                    <img src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
+                    <img data-src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
                     <p>${user.name} (@${screenName})</p>
                 `;
                 card.onclick = () => {
@@ -802,7 +818,7 @@ async function loadUsers() {
             const card = document.createElement('div');
             card.className = 'user-card';
             card.innerHTML = `
-                <img src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
+                <img data-src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
                 <p>${user.name} (@${screenName})</p>
             `;
             card.onclick = () => {
@@ -814,4 +830,8 @@ async function loadUsers() {
         otherSection.appendChild(otherGrid);
         userList.appendChild(otherSection);
     }
+
+    // 初始化懒加载
+    setupLazyLoading();
 }
+
