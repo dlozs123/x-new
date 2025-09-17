@@ -7,7 +7,7 @@ function getIconUrl(userName) {
 
 // 手动分类：用户复制粘贴这里
 const userCategories = {
-    "芙兰蕾咪": [
+   "芙兰蕾咪": [
         "franruhika",
         "crerp",
         "Haruki50501",
