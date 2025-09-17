@@ -7,7 +7,7 @@ function getIconUrl(userName) {
 
 // 手动分类：用户复制粘贴这里
 const userCategories = {
-    "芙兰蕾咪": [
+   "芙兰蕾咪": [
         "franruhika",
         "crerp",
         "Haruki50501",
@@ -733,36 +733,28 @@ const userCategories = {
     ]
 };
 
-// 懒加载核心：IntersectionObserver
+// 图片懒加载
 function setupLazyLoading() {
     const lazyImages = document.querySelectorAll("img[data-src]");
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
-                img.src = img.dataset.src; // 真正加载图片
+                img.src = img.dataset.src;
                 img.removeAttribute("data-src");
                 obs.unobserve(img);
             }
         });
-    }, { rootMargin: "50px" }); // 提前 50px 加载
+    }, { rootMargin: "50px" });
 
     lazyImages.forEach(img => observer.observe(img));
 }
 
-async function loadUsers() {
-    const data = await getTweetData();
-    const users = {};
-    data.forEach(tweet => {
-        const { screen_name, name } = tweet;
-        if (!users[screen_name]) {
-            users[screen_name] = { name };
-        }
-    });
-
+// 主页面渲染用户卡片（不用加载 JSON）
+function loadUsers() {
     const userList = document.getElementById('user-list');
 
-    // 为每个类别渲染 section
+    // 遍历每个类别
     Object.keys(userCategories).forEach(category => {
         const categorySection = document.createElement('div');
         categorySection.className = 'category-section';
@@ -776,19 +768,16 @@ async function loadUsers() {
 
         const categoryUsers = userCategories[category];
         categoryUsers.forEach(screenName => {
-            const user = users[screenName];
-            if (user) {
-                const card = document.createElement('div');
-                card.className = 'user-card';
-                card.innerHTML = `
-                    <img data-src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
-                    <p>${user.name} (@${screenName})</p>
-                `;
-                card.onclick = () => {
-                    window.location.href = `user.html?screen_name=${screenName}`;
-                };
-                grid.appendChild(card);
-            }
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            card.innerHTML = `
+                <img data-src="${getIconUrl(screenName)}" alt="${screenName}'s avatar">
+                <p>${screenName}</p>
+            `;
+            card.onclick = () => {
+                window.location.href = `user.html?screen_name=${screenName}`;
+            };
+            grid.appendChild(card);
         });
 
         if (grid.children.length > 0) {
@@ -797,41 +786,6 @@ async function loadUsers() {
         }
     });
 
-    // 添加其他用户（未分类）
-    const otherUsers = Object.keys(users).filter(
-        screenName => !Object.values(userCategories).flat().includes(screenName)
-    );
-
-    if (otherUsers.length > 0) {
-        const otherSection = document.createElement('div');
-        otherSection.className = 'category-section';
-
-        const otherTitle = document.createElement('h2');
-        otherTitle.textContent = '其他用户';
-        otherSection.appendChild(otherTitle);
-
-        const otherGrid = document.createElement('div');
-        otherGrid.className = 'user-grid';
-
-        otherUsers.forEach(screenName => {
-            const user = users[screenName];
-            const card = document.createElement('div');
-            card.className = 'user-card';
-            card.innerHTML = `
-                <img data-src="${getIconUrl(user.name)}" alt="${user.name}'s avatar">
-                <p>${user.name} (@${screenName})</p>
-            `;
-            card.onclick = () => {
-                window.location.href = `user.html?screen_name=${screenName}`;
-            };
-            otherGrid.appendChild(card);
-        });
-
-        otherSection.appendChild(otherGrid);
-        userList.appendChild(otherSection);
-    }
-
     // 初始化懒加载
     setupLazyLoading();
 }
-
