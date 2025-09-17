@@ -19,7 +19,6 @@ function getMediaUrl(screenName, tweetId, index, createdAt, mediaItem) {
     return `https://r3.dlozs.top/${screenName}_${tweetId}_${mediaItem.type}_${index + 1}_${dateStr}.${ext}`;
 }
 
-// 批量加载参数
 let BATCH_SIZE = 10; // 每次加载推文数量
 let loadedCount = 0;
 let userTweetsGlobal = []; // 全局保存该用户推文
@@ -59,7 +58,6 @@ function loadNextBatch() {
         tweetDiv.className = 'tweet';
         const formattedTime = formatDate(tweet.created_at);
 
-        // 媒体内容
         let mediaHtml = '';
         if (tweet.media && tweet.media.length > 0) {
             mediaHtml = '<div class="tweet-media">';
@@ -74,16 +72,15 @@ function loadNextBatch() {
                         </video>
                     `;
                 } else {
-                    mediaHtml += `<img data-src="${mediaUrl}" alt="Tweet media ${index + 1}" class="clickable-image">`;
+                    mediaHtml += `<img src="${mediaUrl}" alt="Tweet media ${index + 1}" class="clickable-image">`;
                 }
             });
             mediaHtml += '</div>';
         }
 
-        // 推文头像改为使用 screen_name
         tweetDiv.innerHTML = `
             <div class="tweet-header">
-                <img data-src="${getIconUrl(tweet.screen_name)}" alt="${tweet.screen_name}'s avatar" class="tweet-avatar">
+                <img src="${getIconUrl(tweet.name)}" alt="${tweet.name}'s avatar" class="tweet-avatar">
                 <div>
                     <span class="tweet-user">${tweet.name}</span>
                     <span class="tweet-screenname">@${tweet.screen_name}</span>
@@ -99,7 +96,6 @@ function loadNextBatch() {
             </div>
         `;
 
-        // 推文操作按钮
         tweetDiv.querySelectorAll('.action-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 btn.classList.toggle('active');
@@ -110,17 +106,13 @@ function loadNextBatch() {
     });
 
     loadedCount += nextBatch.length;
-
-    // 初始化图片懒加载
-    setupLazyLoadImages();
-
-    // 初始化图片 modal
+    // 只有当有图片时才调用 setupImageModal
     if (document.querySelectorAll('.tweet-media .clickable-image').length > 0) {
         setupImageModal();
     }
 }
 
-// 滚动加载
+// 设置滚动懒加载
 function setupScrollLoad() {
     window.addEventListener('scroll', () => {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
@@ -131,24 +123,7 @@ function setupScrollLoad() {
     });
 }
 
-// 图片懒加载
-function setupLazyLoadImages() {
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                obs.unobserve(img);
-            }
-        });
-    }, { rootMargin: '50px' });
-
-    lazyImages.forEach(img => observer.observe(img));
-}
-
-// 图片 modal
+// 设置图片点击弹出 modal
 function setupImageModal() {
     let modal = document.getElementById('image-modal');
     if (!modal) {
@@ -160,7 +135,7 @@ function setupImageModal() {
             <img class="modal-content" id="modal-image">
         `;
         document.body.appendChild(modal);
-        modal.style.display = 'none';
+        modal.style.display = 'none'; // 显式隐藏 modal
 
         modal.querySelector('.close').addEventListener('click', () => {
             modal.style.display = 'none';
@@ -176,7 +151,7 @@ function setupImageModal() {
     const images = document.querySelectorAll('.tweet-media .clickable-image');
     images.forEach(img => {
         if (!img.dataset.modalBound) {
-            img.dataset.modalBound = 'true';
+            img.dataset.modalBound = "true";
             img.addEventListener('click', () => {
                 const modalImg = document.getElementById('modal-image');
                 modalImg.src = img.src;
