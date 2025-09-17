@@ -772,7 +772,7 @@ function loadUsers() {
             card.className = 'user-card';
             card.innerHTML = `
                 <img data-src="${getIconUrl(screenName)}" alt="${screenName}'s avatar">
-                <p>${Name}</p>
+                <p>${screenName}</p>
             `;
             card.onclick = () => {
                 window.location.href = `user.html?screen_name=${screenName}`;
@@ -789,4 +789,5 @@ function loadUsers() {
     // 初始化懒加载
     setupLazyLoading();
 }
+
 
