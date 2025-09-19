@@ -1,7 +1,7 @@
 // 图标相关：URL 生成
 function getIconUrl(screenName) {
     // 替换特殊字符 * : / 为 _
-    let sanitizedName = screenName.replace(/[*:/]/g, '_');
+    const sanitizedName = screenName.replace(/[*:/]/g, '_');
     return `https://r4.dlozs.top/images/${sanitizedName}.jpg`;
 }
 
@@ -2879,56 +2879,93 @@ const userCategories = {
 // 懒加载核心：IntersectionObserver
 function setupLazyLoading() {
     const lazyImages = document.querySelectorAll("img[data-src]");
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src; // 真正加载图片
-                img.removeAttribute("data-src");
-                obs.unobserve(img);
-            }
-        });
-    }, { rootMargin: "50px" }); // 提前 50px 加载
+    const observer = new IntersectionObserver(
+        (entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src; // 真正加载图片
+                    img.removeAttribute("data-src");
+                    obs.unobserve(img); // 优化：单次观察后移除
+                }
+            });
+        },
+        { rootMargin: "0px" } // 优化：仅在可见区域加载，避免提前触发
+    );
 
     lazyImages.forEach(img => observer.observe(img));
 }
 
-// 渲染用户卡片
-function loadUsers() {
+// 虚拟列表：分批渲染用户卡片
+function loadUsers(page = 1, perPage = 20) {
     const userList = document.getElementById('user-list');
+    if (!userList) return; // 安全检查
 
-    // 为每个类别渲染 section
+    // 使用 DocumentFragment 减少 reflow
+    const fragment = document.createDocumentFragment();
+
+    // 扁平化用户数据，计算总页数
+    const allUsers = [];
     Object.keys(userCategories).forEach(category => {
+        allUsers.push(...userCategories[category].map(user => ({ ...user, category })));
+    });
+    const totalPages = Math.ceil(allUsers.length / perPage);
+    const start = (page - 1) * perPage;
+    const end = Math.min(start + perPage, allUsers.length);
+
+    // 只渲染当前页的用户
+    for (let i = start; i < end; i++) {
+        const user = allUsers[i];
         const categorySection = document.createElement('div');
         categorySection.className = 'category-section';
-
-        const title = document.createElement('h2');
-        title.textContent = category;
-        categorySection.appendChild(title);
+        if (i === start || allUsers[i - 1].category !== user.category) {
+            const title = document.createElement('h2');
+            title.textContent = user.category;
+            categorySection.appendChild(title);
+        }
 
         const grid = document.createElement('div');
         grid.className = 'user-grid';
 
-        const categoryUsers = userCategories[category];
-        categoryUsers.forEach(user => {
-            const card = document.createElement('div');
-            card.className = 'user-card';
-            card.innerHTML = `
-                <img data-src="${getIconUrl(user.screenName)}" alt="${user.name}'s avatar">
-                <p>${user.name} (@${user.screenName})</p>
-            `;
-            card.onclick = () => {
-                window.location.href = `user.html?screen_name=${user.screenName}`;
-            };
-            grid.appendChild(card);
-        });
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.innerHTML = `
+            <img data-src="${getIconUrl(user.screenName)}" alt="${user.name}'s avatar" width="100" height="100">
+            <p>${user.name} (@${user.screenName})</p>
+        `;
+        card.onclick = () => {
+            window.location.href = `user.html?screen_name=${user.screenName}`;
+        };
+        grid.appendChild(card);
+        categorySection.appendChild(grid);
+        fragment.appendChild(categorySection);
+    }
 
-        if (grid.children.length > 0) {
-            categorySection.appendChild(grid);
-            userList.appendChild(categorySection);
-        }
-    });
+    // 追加到 DOM
+    userList.appendChild(fragment);
 
     // 初始化懒加载
     setupLazyLoading();
+
+    // 滚动加载下一页
+    if (page < totalPages) {
+        const loadMore = () => {
+            if (
+                window.innerHeight + window.scrollY >=
+                document.body.offsetHeight - 500
+            ) {
+                loadUsers(page + 1, perPage);
+                window.removeEventListener('scroll', loadMore); // 避免重复绑定
+            }
+        };
+        window.addEventListener('scroll', loadMore);
+    }
 }
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+    console.time('loadUsers');
+    loadUsers();
+    console.timeEnd('loadUsers');
+    console.log('Total users:', Object.values(userCategories).flat().length);
+});
