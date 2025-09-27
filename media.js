@@ -80,7 +80,7 @@ function loadNextBatch() {
 
         tweetDiv.innerHTML = `
             <div class="tweet-header">
-                <img src="${getIconUrl(tweet.name)}" alt="${tweet.name}'s avatar" class="tweet-avatar">
+                <img src="${getIconUrl(tweet.screen_name)}" alt="${tweet.name}'s avatar" class="tweet-avatar">
                 <div>
                     <span class="tweet-user">${tweet.name}</span>
                     <span class="tweet-screenname">@${tweet.screen_name}</span>
