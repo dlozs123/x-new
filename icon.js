@@ -1035,6 +1035,102 @@ const userCategories = {
         {
             "screenName": "samo_yukkuri",
             "name": "さもふらわー🍀ゆっくり実況"
+        },
+        {
+            "screenName": "atamasummer",
+            "name": "常々/toori"
+        },
+        {
+            "screenName": "kurogane_ayaya",
+            "name": "黒鋼🐦‍⬛"
+        },
+        {
+            "screenName": "hoshibakoWorks",
+            "name": "HoshibakoWorks‧✧̣̥̇‧星箱Works"
+        },
+        {
+            "screenName": "FZNo2noblG92331",
+            "name": "こんそめぽてち"
+        },
+        {
+            "screenName": "sigure0210",
+            "name": "時雨。 紅楼夢な10a 秋例い85ab"
+        },
+        {
+            "screenName": "act_rock",
+            "name": "ACTRock@イノライ紅楼夢あ11ab"
+        },
+        {
+            "screenName": "matchach",
+            "name": "Matcha🍵"
+        },
+        {
+            "screenName": "atori_ragi",
+            "name": "葛城アトリ"
+        },
+        {
+            "screenName": "Sizu_picture",
+            "name": "Sizu@秋例う-10a"
+        },
+        {
+            "screenName": "SubHituzi495",
+            "name": "サブひつじ"
+        },
+        {
+            "screenName": "kametoyou",
+            "name": "とよう"
+        },
+        {
+            "screenName": "NyuMuji_ppp",
+            "name": "にゅむぢ"
+        },
+        {
+            "screenName": "noriuma_",
+            "name": "のりうま"
+        },
+        {
+            "screenName": "nanashi_1104",
+            "name": "ぜんてゃ"
+        },
+        {
+            "screenName": "illust_atelier3",
+            "name": "イラストアトリエ"
+        },
+        {
+            "screenName": "bishojocos",
+            "name": "美Cos【公式】コスプレイヤーさん！絵師さん！Vtuberさん！応援Webマガジン🌟"
+        },
+        {
+            "screenName": "MATEO2023_ex",
+            "name": "健康な手負い@例大祭 う46ab"
+        },
+        {
+            "screenName": "sassatu_r",
+            "name": "颯颯(さっさつ)/秋季例大祭う14b"
+        },
+        {
+            "screenName": "Nacht_musik__",
+            "name": "なはと@秋例大祭う-29a"
+        },
+        {
+            "screenName": "anllouser",
+            "name": "Anllouser"
+        },
+        {
+            "screenName": "asakuramaru",
+            "name": "亜桜まる（アイズファクトリー）"
+        },
+        {
+            "screenName": "luuu_u_u",
+            "name": "Lunaちゃ@ご依頼募集中"
+        },
+        {
+            "screenName": "TenX2_1341",
+            "name": "天貂"
+        },
+        {
+            "screenName": "naga_masanaga",
+            "name": "政長🐤紅楼夢な01ab•秋例え85ab"
         }
     ],
     "觉恋": [
@@ -1593,6 +1689,34 @@ const userCategories = {
         {
             "screenName": "campagne_9",
             "name": "カンパ"
+        },
+        {
+            "screenName": "lolimate",
+            "name": "ロリメイト＠東方絵描き"
+        },
+        {
+            "screenName": "RDdumpling",
+            "name": "明石迓"
+        },
+        {
+            "screenName": "charlulo",
+            "name": "夏璐珞(シャルロ)"
+        },
+        {
+            "screenName": "ibushi_roun",
+            "name": "あきふゆはるか"
+        },
+        {
+            "screenName": "Dobos_torte",
+            "name": "도슈 / dobos_torte"
+        },
+        {
+            "screenName": "giname93076",
+            "name": "ぎなめ💙"
+        },
+        {
+            "screenName": "gegezaki_26",
+            "name": "げげざき@skeb募集"
         }
     ],
     "其他东方": [
@@ -1963,6 +2087,14 @@ const userCategories = {
         {
             "screenName": "khk_LW",
             "name": "琥珀"
+        },
+        {
+            "screenName": "maturiuta_2",
+            "name": "maturiuta_2"
+        },
+        {
+            "screenName": "Ssaf52913778",
+            "name": "Waptia"
         }
     ],
     "舰队": [
@@ -2871,6 +3003,10 @@ const userCategories = {
         {
             "screenName": "reimen_caluna",
             "name": "超初音かるな"
+        },
+        {
+            "screenName": "Yagi5Art",
+            "name": "山羊です"
         }
     ]
 };
