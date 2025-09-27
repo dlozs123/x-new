@@ -47,7 +47,7 @@ function loadUsers() {
                 <p>${user.name} (@${user.screenName})</p>
             `;
             card.onclick = () => {
-                window.location.href = \`user.html?screen_name=\${user.screenName}\`;
+                window.location.href = `user.html?screen_name=${user.screenName}`;
             };
             grid.appendChild(card);
         });
