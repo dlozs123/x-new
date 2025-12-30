@@ -40,6 +40,12 @@ async function loadUserTweets() {
 
         loadedCount = 0;
         document.getElementById('tweet-list').innerHTML = '';
+        
+        // 渲染时间线导航
+        if (typeof renderTimelineNav === 'function') {
+            renderTimelineNav(userTweetsGlobal);
+        }
+        
         loadNextBatch(); // 首次加载
         setupScrollLoad(); // 设置滚动懒加载
     } catch (error) {
@@ -56,6 +62,7 @@ function loadNextBatch() {
     nextBatch.forEach(tweet => {
         const tweetDiv = document.createElement('div');
         tweetDiv.className = 'tweet';
+        tweetDiv.dataset.tweetId = tweet.id;
         const formattedTime = formatDate(tweet.created_at);
 
         let mediaHtml = '';

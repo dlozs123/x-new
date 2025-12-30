@@ -10,10 +10,28 @@
     <header>
         <h1>推文归档 - <span id="user-name"></span></h1>
     </header>
+    
+    <!-- 侧边栏切换按钮 -->
+    <button id="sidebar-toggle" class="sidebar-toggle">📅</button>
+    
+    <!-- 侧边栏 -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>时间线</h3>
+            <button id="sidebar-close" class="sidebar-close">×</button>
+        </div>
+        <div id="timeline-nav" class="timeline-nav"></div>
+    </div>
+    
+    <!-- 侧边栏遮罩 -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    
     <div id="tweet-list" class="tweet-container"></div>
+    
     <script src="common.js"></script>
     <script src="icon.js"></script>
     <script src="media.js"></script>
+    <script src="sidebar.js"></script>
     <script>
         loadUserTweets();
     </script>

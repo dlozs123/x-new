@@ -13,6 +13,179 @@ header {
     text-align: center;
 }
 
+/* 侧边栏切换按钮 */
+.sidebar-toggle {
+    position: fixed;
+    left: 20px;
+    top: 80px;
+    z-index: 900;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+.sidebar-toggle:hover {
+    background-color: #1a91da;
+    transform: scale(1.1);
+}
+
+/* 侧边栏 */
+.sidebar {
+    position: fixed;
+    left: -320px;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #1da1f2;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.sidebar-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* 侧边栏遮罩 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* 时间线导航 */
+.timeline-nav {
+    padding: 10px;
+}
+
+.timeline-item {
+    margin: 5px 0;
+}
+
+.timeline-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.timeline-header:hover {
+    background-color: #f0f0f0;
+}
+
+.timeline-toggle {
+    width: 20px;
+    margin-right: 5px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.timeline-item.expanded > .timeline-header .timeline-toggle {
+    transform: rotate(90deg);
+}
+
+.timeline-label {
+    flex: 1;
+    font-weight: 500;
+}
+
+.timeline-children {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 20px;
+}
+
+.timeline-item.expanded > .timeline-children {
+    max-height: 2000px;
+}
+
+.timeline-year .timeline-label {
+    font-size: 16px;
+    color: #1da1f2;
+}
+
+.timeline-month .timeline-label {
+    font-size: 14px;
+    color: #333;
+}
+
+.timeline-day {
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.timeline-day:hover {
+    background-color: #e8f5fe;
+}
+
+.timeline-day .timeline-label {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 推文高亮效果 */
+.tweet.highlight {
+    animation: highlight-flash 2s ease;
+}
+
+@keyframes highlight-flash {
+    0%, 100% {
+        background-color: white;
+    }
+    50% {
+        background-color: #e8f5fe;
+    }
+}
+
 /* 分类整体样式 */
 .category-section {
     margin: 20px 0;
@@ -71,6 +244,7 @@ header {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
+    transition: background-color 0.3s;
 }
 
 .tweet-header {
@@ -135,7 +309,7 @@ header {
 
 /* 图片 modal 样式 */
 .modal {
-    display: none; /* 确保默认隐藏 */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -171,6 +345,26 @@ header {
 .close:focus {
     color: #bbb;
     text-decoration: none;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        left: 10px;
+        top: 70px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .sidebar {
+        width: 280px;
+        left: -280px;
+    }
+    
+    .tweet-container {
+        padding: 10px;
+    }
 }
 
 @media (max-width: 600px) {
