@@ -1,3 +1,56 @@
+// 共享函数：数据加载和合并多个 JSON 文件
+async function loadAllJsonFiles() {
+    try {
+        // 先读取 index.json 获取所有文件列表
+        const indexResponse = await fetch('json/index.json');
+        if (!indexResponse.ok) {
+            throw new Error('Failed to load json/index.json');
+        }
+        const indexData = await indexResponse.json();
+        
+        // 并行加载所有 JSON 文件
+        const promises = indexData.files.map(filename => 
+            fetch(`json/${filename}`)
+                .then(res => {
+                    if (!res.ok) {
+                        console.warn(`Failed to load json/${filename}`);
+                        return [];
+                    }
+                    return res.json();
+                })
+                .catch(err => {
+                    console.warn(`Error loading json/${filename}:`, err);
+                    return [];
+                })
+        );
+        
+        const results = await Promise.all(promises);
+        
+        // 合并所有数据
+        const allTweets = results.flat();
+        console.log(`Successfully loaded ${allTweets.length} tweets from ${indexData.files.length} files`);
+        
+        return allTweets;
+    } catch (error) {
+        console.error('Error loading JSON files:', error);
+        return [];
+    }
+}
+
+// 全局缓存数据，避免重复加载
+window.tweetData = null;
+async function getTweetData() {
+    if (!window.tweetData) {
+        window.tweetData = await loadAllJsonFiles();
+    }
+    return window.tweetData;
+}
+
+function formatDate(createdAt) {
+    const date = new Date(createdAt);
+    return date.toLocaleString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
 // 媒体相关：URL 生成、推文渲染（包括媒体、互动和图片 modal）
 function getMediaUrl(screenName, tweetId, index, createdAt, mediaItem) {
     const date = new Date(createdAt);
