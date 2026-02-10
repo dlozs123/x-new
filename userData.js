@@ -1,4 +1,3 @@
-// 用户分类数据（只维护这里）
 const userCategories = {
     "芙兰蕾咪": [
         {
@@ -86,6 +85,10 @@ const userCategories = {
             "name": "Ougi"
         },
         {
+            "screenName": "_suisuiuica_",
+            "name": "すいすいすいか🥮@skeb受付中"
+        },
+        {
             "screenName": "utyouten_akako",
             "name": "卯鳥天　赤子✍️Illustrator＠お仕事募集中"
         },
@@ -156,6 +159,10 @@ const userCategories = {
         {
             "screenName": "majamari17",
             "name": "majamari🦋"
+        },
+        {
+            "screenName": "Murabbit1go",
+            "name": "陸佐re大尉_2nd"
         },
         {
             "screenName": "remifrakoi",
@@ -234,6 +241,10 @@ const userCategories = {
             "name": "柏森たま。"
         },
         {
+            "screenName": "npoin_",
+            "name": "まさかめあ"
+        },
+        {
             "screenName": "deruta3diet10",
             "name": "でるたAx9"
         },
@@ -252,6 +263,10 @@ const userCategories = {
         {
             "screenName": "_uzunome",
             "name": "うずめ"
+        },
+        {
+            "screenName": "MibanaLun387",
+            "name": "未花　ルン"
         },
         {
             "screenName": "264lino1",
@@ -404,6 +419,10 @@ const userCategories = {
         {
             "screenName": "zakozakoY",
             "name": "ザコザコY"
+        },
+        {
+            "screenName": "ki_karena",
+            "name": "Renka＠お仕事募集中"
         },
         {
             "screenName": "manmarumikan_",
@@ -1124,6 +1143,258 @@ const userCategories = {
         {
             "screenName": "naga_masanaga",
             "name": "政長🐤紅楼夢な01ab•秋例え85ab"
+        },
+        {
+            "screenName": "LEXUS_6737",
+            "name": "ジェット虚無僧"
+        },
+        {
+            "screenName": "Taiyaki_MMDman",
+            "name": "𝓣𝓪𝓲𝓪𝓴𝓲~。"
+        },
+        {
+            "screenName": "sera_0517",
+            "name": "せーら"
+        },
+        {
+            "screenName": "Chammerry_shann",
+            "name": "しゃんめりー"
+        },
+        {
+            "screenName": "nekofish_TH",
+            "name": "ねこ魚@東方絵垢"
+        },
+        {
+            "screenName": "Yunon1421",
+            "name": "Yunon"
+        },
+        {
+            "screenName": "kurokami_syura",
+            "name": "黒上@依頼募集中"
+        },
+        {
+            "screenName": "choroattohani_",
+            "name": "チョロあっとはにー🌱"
+        },
+        {
+            "screenName": "psychoron",
+            "name": "ぢせ🎲"
+        },
+        {
+            "screenName": "hr_rz_ggg",
+            "name": "ヘレ/HERE"
+        },
+        {
+            "screenName": "Tsuru_ha_",
+            "name": "都瑠葉😶‍🌫️"
+        },
+        {
+            "screenName": "ChuheiSeica",
+            "name": "宙閉星華 (ちゅうへい　せいか)"
+        },
+        {
+            "screenName": "kazu_166",
+            "name": "カズ"
+        },
+        {
+            "screenName": "pillow231303",
+            "name": "涼貓"
+        },
+        {
+            "screenName": "debu_taishi",
+            "name": "消毒太"
+        },
+        {
+            "screenName": "Minamo_Kyoka",
+            "name": "水面 鏡花"
+        },
+        {
+            "screenName": "np0in_",
+            "name": "まさかめア"
+        },
+        {
+            "screenName": "alquermes",
+            "name": "みーか🐈‍⬛次回藍橙オンリー"
+        },
+        {
+            "screenName": "_S_C_Z_",
+            "name": "ふゆまつり"
+        },
+        {
+            "screenName": "jingeo138301",
+            "name": "MAGNUS"
+        },
+        {
+            "screenName": "TADANO1129",
+            "name": "ただの"
+        },
+        {
+            "screenName": "horaimu",
+            "name": "ほらいむ"
+        },
+        {
+            "screenName": "T8a2n",
+            "name": "茶"
+        },
+        {
+            "screenName": "oekakikazoku",
+            "name": "おえかきかぞく"
+        },
+        {
+            "screenName": "mattyakinako315",
+            "name": "まっちゃきなこ。（VTuber：松千弥きなこ）"
+        },
+        {
+            "screenName": "tume_ama",
+            "name": "猫 māo"
+        },
+        {
+            "screenName": "citron398",
+            "name": "しとろん"
+        },
+        {
+            "screenName": "reimei75812z",
+            "name": "黎明"
+        },
+        {
+            "screenName": "Carbohy13228606",
+            "name": "炭//Skeb募集中/Carbohydrate"
+        },
+        {
+            "screenName": "mizunisabano",
+            "name": "みずに🐟"
+        },
+        {
+            "screenName": "kisaragi1709",
+            "name": "きさらぎ"
+        },
+        {
+            "screenName": "SOnanoka_",
+            "name": "そう"
+        },
+        {
+            "screenName": "bJq1vydb1q1TNK0",
+            "name": "べアール"
+        },
+        {
+            "screenName": "saaamon_4005",
+            "name": "さも🐟"
+        },
+        {
+            "screenName": "Co8Li",
+            "name": "萌風まあ🐶mofumaa"
+        },
+        {
+            "screenName": "kitunegasak",
+            "name": "狐ヶ崎"
+        },
+        {
+            "screenName": "1dtsa",
+            "name": "博多豚骨いちだい"
+        },
+        {
+            "screenName": "FurannSaikawa",
+            "name": "義春みちを"
+        },
+        {
+            "screenName": "illu_stra_tion",
+            "name": "瀬乃すとら@skeb募集中"
+        },
+        {
+            "screenName": "GOMA_f_AZarashi",
+            "name": "ごましろ@skeb募集中"
+        },
+        {
+            "screenName": "RINGO33757",
+            "name": "RINGO"
+        },
+        {
+            "screenName": "mikan7f",
+            "name": "リンゴ"
+        },
+        {
+            "screenName": "HarunoLeaf",
+            "name": "ハルノハ(忙しめ)"
+        },
+        {
+            "screenName": "midoro29",
+            "name": "👾ミドロ"
+        },
+        {
+            "screenName": "Aischtle",
+            "name": "ぽよのうみ"
+        },
+        {
+            "screenName": "29osakana",
+            "name": "までの"
+        },
+        {
+            "screenName": "inasaneko",
+            "name": "いなさ@"
+        },
+        {
+            "screenName": "Ei_TanTan",
+            "name": "えーたん"
+        },
+        {
+            "screenName": "ichigoxxusagi",
+            "name": "苺🍓"
+        },
+        {
+            "screenName": "mokotan802",
+            "name": "麻婆飯"
+        },
+        {
+            "screenName": "ColonelAki",
+            "name": "Colonel_aki"
+        },
+        {
+            "screenName": "meon_1275",
+            "name": "めおん"
+        },
+        {
+            "screenName": "suigyu_xxx",
+            "name": "すいぎゅう"
+        },
+        {
+            "screenName": "krd_314",
+            "name": "黑田のの"
+        },
+        {
+            "screenName": "_o_shi_my_",
+            "name": "をしまい🐥＠Skeb募集中"
+        },
+        {
+            "screenName": "alto_E_2022",
+            "name": "ある都🍁お仕事募集中"
+        },
+        {
+            "screenName": "huyugiri_luna",
+            "name": "冬霧るな"
+        },
+        {
+            "screenName": "yopofen",
+            "name": "鱼泼粉"
+        },
+        {
+            "screenName": "Iga_7",
+            "name": "LZH"
+        },
+        {
+            "screenName": "crimxxx",
+            "name": "@悠"
+        },
+        {
+            "screenName": "10_No_Cut",
+            "name": "コウ"
+        },
+        {
+            "screenName": "Yugi_irasuto748",
+            "name": "儚也ゆうぎ"
+        },
+        {
+            "screenName": "xox495_owen_",
+            "name": "ゆん❤️‍🩹"
         }
     ],
     "觉恋": [
@@ -1710,6 +1981,114 @@ const userCategories = {
         {
             "screenName": "gegezaki_26",
             "name": "げげざき@skeb募集"
+        },
+        {
+            "screenName": "tauminust",
+            "name": "minusT"
+        },
+        {
+            "screenName": "menma24",
+            "name": "えだまめ茶🍵@skeb募集中！"
+        },
+        {
+            "screenName": "Ne10_neon",
+            "name": "neon"
+        },
+        {
+            "screenName": "culotter_96",
+            "name": "きゅろ/culotte"
+        },
+        {
+            "screenName": "ALiz_AmaNe514lv",
+            "name": "あまねありす@Skeb依頼募集中"
+        },
+        {
+            "screenName": "sugar2283",
+            "name": "るい"
+        },
+        {
+            "screenName": "ita6110",
+            "name": "シイか"
+        },
+        {
+            "screenName": "HouseofComm_ai",
+            "name": "Lower_Chamber"
+        },
+        {
+            "screenName": "yuwanoonsen",
+            "name": "ゆわの/yuwano ご依頼募集中"
+        },
+        {
+            "screenName": "mitsume310i",
+            "name": "みつめ／三番目"
+        },
+        {
+            "screenName": "fuyume186705",
+            "name": "fuyume"
+        },
+        {
+            "screenName": "nanahana_nanana",
+            "name": "ななはな"
+        },
+        {
+            "screenName": "tentyuu_th",
+            "name": "tentyuu/てんちゅう"
+        },
+        {
+            "screenName": "kachulie",
+            "name": "まゆつかちゅりん"
+        },
+        {
+            "screenName": "b1qDVKcIdK917",
+            "name": "チョコラ🍫東方絵描き"
+        },
+        {
+            "screenName": "hayu_e",
+            "name": "芭結"
+        },
+        {
+            "screenName": "Tya_514",
+            "name": "捧"
+        },
+        {
+            "screenName": "fei43296",
+            "name": "文Fliex"
+        },
+        {
+            "screenName": "ArayaReveries",
+            "name": "兎角"
+        },
+        {
+            "screenName": "polyhedron12",
+            "name": "ぽりへどろん＠skeb募集中"
+        },
+        {
+            "screenName": "devilkillerX",
+            "name": "二阶堂"
+        },
+        {
+            "screenName": "shin_kun30",
+            "name": "しぃ 🌙*゜"
+        },
+        {
+            "screenName": "zetubouog3",
+            "name": "ぬかづけ"
+        },
+        {
+            "screenName": "urouror",
+            "name": "む"
+        },
+        {
+            "screenName": "ChisaiGathering",
+            "name": "ちさい🐥Skebリク募集中"
+        },
+        {
+            "screenName": "tinatamaaAA",
+            "name": "てぃなたま"
+        },
+        {
+            "screenName": "Isonokami_",
+            "name": "稗宮"
         }
     ],
     "其他东方": [
@@ -2088,6 +2467,242 @@ const userCategories = {
         {
             "screenName": "Ssaf52913778",
             "name": "Waptia"
+        },
+        {
+            "screenName": "TD12734",
+            "name": "T.D🌟紅楼夢B-06a🌙秋例は20b"
+        },
+        {
+            "screenName": "iliekcatfood",
+            "name": "iliekcatfood"
+        },
+        {
+            "screenName": "transfooorm",
+            "name": "それがし"
+        },
+        {
+            "screenName": "maruten_moko",
+            "name": "。。"
+        },
+        {
+            "screenName": "Touhou_AR",
+            "name": "東方アルカディアレコード"
+        },
+        {
+            "screenName": "sh1uq_",
+            "name": "上野"
+        },
+        {
+            "screenName": "onlinelife777",
+            "name": "らいふ"
+        },
+        {
+            "screenName": "kukurukurukuru_",
+            "name": "kuuu@skeb募集中"
+        },
+        {
+            "screenName": "minore_0227",
+            "name": "清水みのれ"
+        },
+        {
+            "screenName": "surume0329",
+            "name": "するめ"
+        },
+        {
+            "screenName": "danmakuJP",
+            "name": "アンノウンX公式⛩️ほらふき山の魔理沙/ダンカグPL発売中！"
+        },
+        {
+            "screenName": "hayaten_8863",
+            "name": "hayaten"
+        },
+        {
+            "screenName": "wobumi",
+            "name": "あおい"
+        },
+        {
+            "screenName": "yoketarou137_5",
+            "name": "とっとこ避太郎🐹🧪@よけらぼ"
+        },
+        {
+            "screenName": "dedemarudesu",
+            "name": "ででまる"
+        },
+        {
+            "screenName": "Poker_Face1225",
+            "name": "ぽーかぁふぇぃす"
+        },
+        {
+            "screenName": "nnkl3q49JF78857",
+            "name": "ルナミーのゆっくり実況@リクエスト・skeb募集中"
+        },
+        {
+            "screenName": "gen_suv_bu",
+            "name": "幻サバ部"
+        },
+        {
+            "screenName": "Regu_gua",
+            "name": "れぐあ"
+        },
+        {
+            "screenName": "wuliwuli909_",
+            "name": "物理wuli"
+        },
+        {
+            "screenName": "AmaIroSaMe489",
+            "name": "天色鮫🦈"
+        },
+        {
+            "screenName": "kiri_tani_",
+            "name": "桐谷"
+        },
+        {
+            "screenName": "Rina_Macarons",
+            "name": "R_Macarons@宇都宮市サイネージ放映開始"
+        },
+        {
+            "screenName": "takoyaki5221",
+            "name": "たこやき🐙"
+        },
+        {
+            "screenName": "Chirpy_ai",
+            "name": "絵巻まき"
+        },
+        {
+            "screenName": "_ebuna",
+            "name": "えぶな"
+        },
+        {
+            "screenName": "necoyngwie",
+            "name": "neco"
+        },
+        {
+            "screenName": "dedede_mon",
+            "name": "プリフ"
+        },
+        {
+            "screenName": "sakuyabm",
+            "name": "桜谷@Skeb受付中！"
+        },
+        {
+            "screenName": "ai5ponta3",
+            "name": "あいまーく@紅魔館"
+        },
+        {
+            "screenName": "hakuhuro_ss",
+            "name": "ハクレイフロンティアSS公式"
+        },
+        {
+            "screenName": "shiroyamadon",
+            "name": "白山どんどゅるま"
+        },
+        {
+            "screenName": "eg_info",
+            "name": "アールグレイ(EG)公式"
+        },
+        {
+            "screenName": "hatsuka2o",
+            "name": "はつか"
+        },
+        {
+            "screenName": "mepibow2",
+            "name": "大福めぴ"
+        },
+        {
+            "screenName": "hotaruneko_7221",
+            "name": "ほたるねこ"
+        },
+        {
+            "screenName": "remifurabansann",
+            "name": "2026/4/12開催予定レミフラ晩餐会 レミフラオンリー同人即売会"
+        },
+        {
+            "screenName": "ya___to000",
+            "name": "やと"
+        },
+        {
+            "screenName": "soboro_0326",
+            "name": "そぼろ"
+        },
+        {
+            "screenName": "awawabbbw",
+            "name": "wawabb"
+        },
+        {
+            "screenName": "amatukimahoro",
+            "name": "雨月まほろ@skeb募集中"
+        },
+        {
+            "screenName": "friendcharacter",
+            "name": "Friend Characters（フレンドキャラクターズ）【公式】"
+        },
+        {
+            "screenName": "autumnorange__",
+            "name": "秋橘🍊"
+        },
+        {
+            "screenName": "Adya_Adya_A",
+            "name": "あぢゃ！？"
+        },
+        {
+            "screenName": "mumumaru60",
+            "name": "むむまる。"
+        },
+        {
+            "screenName": "shlyaya",
+            "name": "しやや"
+        },
+        {
+            "screenName": "_EEza_3324",
+            "name": "3324"
+        },
+        {
+            "screenName": "mYRHwoTAyz428",
+            "name": "さくさくれもん"
+        },
+        {
+            "screenName": "tsu_ne_tune",
+            "name": "かららげ つね@FANBOX"
+        },
+        {
+            "screenName": "zqrta9ZnP764930",
+            "name": "てるてるぼうず"
+        },
+        {
+            "screenName": "monokuromanga",
+            "name": "0-DEN＠🍈新刊委託中"
+        },
+        {
+            "screenName": "sugokunemuiyo88",
+            "name": "全🐰2/8西4ホールQ32a"
+        },
+        {
+            "screenName": "joke_littl97120",
+            "name": "顽咲_Little"
+        },
+        {
+            "screenName": "SQvKV9sHvFSt1NL",
+            "name": "第二髀肉"
+        },
+        {
+            "screenName": "ne_tochika",
+            "name": "ネートチカ"
+        },
+        {
+            "screenName": "sakuramochi__55",
+            "name": "ひぃこ🌷"
+        },
+        {
+            "screenName": "muuba77",
+            "name": "むうば(夢生場)＠"
+        },
+        {
+            "screenName": "LovePlum0510",
+            "name": "水夏もも"
+        },
+        {
+            "screenName": "nagana",
+            "name": "松林ながな"
         }
     ],
     "舰队": [
@@ -3000,6 +3615,58 @@ const userCategories = {
         {
             "screenName": "Yagi5Art",
             "name": "山羊です"
+        },
+        {
+            "screenName": "akiradayooooo",
+            "name": "RC あきら"
+        },
+        {
+            "screenName": "Kerno_kr",
+            "name": "Kerno"
+        },
+        {
+            "screenName": "moriforest1040",
+            "name": "森フォレスト"
+        },
+        {
+            "screenName": "ahiru_draw",
+            "name": "あひる"
+        },
+        {
+            "screenName": "chillchillbl",
+            "name": "ちるちる【BL情報サイト】"
+        },
+        {
+            "screenName": "miinya_dayo_v",
+            "name": "✿みぃな⋆*"
+        },
+        {
+            "screenName": "poi______1",
+            "name": "poi氵"
+        },
+        {
+            "screenName": "hoshi0tea",
+            "name": "星の紅茶💫"
+        },
+        {
+            "screenName": "ainovlove9",
+            "name": "らん"
+        },
+        {
+            "screenName": "Yuemon_8964",
+            "name": "Yuemon Sugihara"
+        },
+        {
+            "screenName": "ji10me",
+            "name": "ジトメ"
+        },
+        {
+            "screenName": "Aoi_gareki",
+            "name": "Aoi@ガレージキット作成"
+        },
+        {
+            "screenName": "danone0723",
+            "name": "だのん"
         }
     ]
 };
