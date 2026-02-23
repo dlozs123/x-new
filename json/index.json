@@ -3,7 +3,9 @@
     "twitter.json",
     "twitter2.json",
     "twitter3.json",
-    "twitter4.json"
+    "twitter4.json",
+    "data.json",
+    "danbooru_tweets.json"
   ]
 
 }
