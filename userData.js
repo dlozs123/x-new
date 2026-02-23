@@ -2131,10 +2131,6 @@ const userCategories = {
         {
             "screenName": "sugari000",
             "name": "スガリ@低浮上"
-        },
-        {
-            "screenName": "tetsu__ttr",
-            "name": "真島まるぢぇら＿神居祭C１７，１８、天狗"
         }
     ],
     "觉恋": [
