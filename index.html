@@ -1,27 +1,362 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>推文归档 - 首页</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>推文归档</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e8e8;
+    --surface: #ffffff;
+    --surface2: #f0f0f0;
+    --border: #d0d0d0;
+    --text: #1a1a1a;
+    --text-muted: #666666;
+    --accent: #3a78d4;
+    --accent2: #7c5cbf;
+    --tag-bg: #e0e0e0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(232,232,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .site-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #4f8ef7, #7c5cbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .site-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Main */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+
+  /* Category */
+  .category-section {
+    margin-bottom: 56px;
+  }
+
+  .category-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    padding: 6px 16px 6px 0;
+    border-bottom: 2px solid var(--border);
+    width: 100%;
+  }
+
+  .category-label-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .category-label-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  /* User card */
+  .user-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .user-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(58,120,212,0.05), rgba(124,92,191,0.05));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .user-card:hover {
+    border-color: rgba(58,120,212,0.4);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+
+  .user-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Avatar */
+  .avatar-wrap {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .user-card:hover .avatar-wrap {
+    border-color: var(--accent);
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .user-info {
+    text-align: center;
+    width: 100%;
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+
+  .user-handle {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+    display: block;
+  }
+
+  .user-handle:hover {
+    color: var(--accent);
+  }
+
+  /* Loading overlay for card */
+  .card-loading {
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+  }
+
+  /* Gradient fallback avatars */
+  .grad-0 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .grad-1 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .grad-2 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .grad-3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .grad-4 { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .grad-5 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+  .grad-6 { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+  .grad-7 { background: linear-gradient(135deg, #96fbc4, #f9f586); }
+
+  @media (max-width: 600px) {
+    .main { padding: 32px 16px; }
+    .site-header { padding: 16px 20px; }
+    .users-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .avatar-wrap { width: 64px; height: 64px; }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <h1>推文归档</h1>
-    </header>
 
-    <div id="user-list"></div>
+<header class="site-header">
+  <div>
+    <div class="site-title">推文归档</div>
+    <div class="site-subtitle">Twitter Archive</div>
+  </div>
+</header>
 
-    <!-- 用户数据 -->
-    <script src="userData.js"></script>
-    <!-- 渲染逻辑 -->
-    <script src="icon.js"></script>
+<main class="main" id="main"></main>
 
-    <script>
-        // 页面加载完成后渲染用户列表
-        loadUsers();
-    </script>
+<script src="userData.js"></script>
+<script>
+const AVATAR_BASE = 'https://r4.dlozs.top/images';
+const gradients = ['grad-0','grad-1','grad-2','grad-3','grad-4','grad-5','grad-6','grad-7'];
+
+function getInitial(name) {
+  // Get first non-emoji meaningful char
+  const clean = name.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
+  return clean[0] || '?';
+}
+
+function hashStr(s) {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) & 0xffffffff;
+  return Math.abs(h);
+}
+
+function createUserCard(user, index) {
+  const card = document.createElement('a');
+  card.className = 'user-card';
+  card.href = `user.html?user=${encodeURIComponent(user.screenName)}`;
+
+  const avatarWrap = document.createElement('div');
+  avatarWrap.className = 'avatar-wrap';
+
+  const img = document.createElement('img');
+  img.className = 'avatar-img';
+  img.alt = user.name;
+
+  const gradClass = gradients[hashStr(user.screenName) % gradients.length];
+  const fallback = document.createElement('div');
+  fallback.className = `avatar-fallback ${gradClass}`;
+  fallback.textContent = getInitial(user.name);
+  fallback.style.display = 'none';
+
+  img.onload = () => {
+    fallback.style.display = 'none';
+    img.style.display = 'block';
+  };
+  img.onerror = () => {
+    img.style.display = 'none';
+    fallback.style.display = 'flex';
+  };
+  img.src = `${AVATAR_BASE}/${user.screenName}.jpg`;
+
+  avatarWrap.appendChild(img);
+  avatarWrap.appendChild(fallback);
+
+  const info = document.createElement('div');
+  info.className = 'user-info';
+
+  const name = document.createElement('div');
+  name.className = 'user-name';
+  name.textContent = user.name;
+
+  const handle = document.createElement('a');
+  handle.className = 'user-handle';
+  handle.href = `https://x.com/${user.screenName}`;
+  handle.target = '_blank';
+  handle.rel = 'noopener noreferrer';
+  handle.textContent = `@${user.screenName}`;
+  handle.addEventListener('click', e => e.stopPropagation());
+
+  info.appendChild(name);
+  info.appendChild(handle);
+
+  card.appendChild(avatarWrap);
+  card.appendChild(info);
+
+  return card;
+}
+
+function render() {
+  const main = document.getElementById('main');
+
+  for (const [categoryName, users] of Object.entries(userCategories)) {
+    const section = document.createElement('section');
+    section.className = 'category-section';
+
+    const label = document.createElement('div');
+    label.className = 'category-label';
+    label.innerHTML = `
+      <span class="category-label-name">${categoryName}</span>
+      <span class="category-label-text">${users.length} users</span>
+    `;
+
+    const grid = document.createElement('div');
+    grid.className = 'users-grid';
+
+    users.forEach((user, i) => {
+      grid.appendChild(createUserCard(user, i));
+    });
+
+    section.appendChild(label);
+    section.appendChild(grid);
+    main.appendChild(section);
+  }
+}
+
+render();
+
+// 保存滚动位置
+window.addEventListener('scroll', () => {
+  sessionStorage.setItem('indexScroll', window.scrollY);
+});
+
+// 恢复滚动位置
+const savedScroll = sessionStorage.getItem('indexScroll');
+if (savedScroll) {
+  // 等内容渲染完再跳
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: parseInt(savedScroll), behavior: 'instant' });
+  });
+}
+</script>
 </body>
 </html>
-
