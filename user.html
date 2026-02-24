@@ -829,45 +829,17 @@ function directImg(src, alt) {
 // ── Video Thumbnail ───────────────────────────────────────
 
 function makeVideoThumbnail(videoUrl) {
-  const canvas = document.createElement('canvas');
-  canvas.style.width = '100%';
-  canvas.style.display = 'block';
-
   const video = document.createElement('video');
-  video.crossOrigin = 'anonymous';
-  video.muted = true;
-  video.preload = 'metadata';
   video.src = videoUrl;
-
-  video.addEventListener('loadeddata', () => {
-    video.currentTime = 0.1;
-  });
-  video.addEventListener('seeked', () => {
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 360;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0);
-    video.remove();
-  });
-  video.addEventListener('error', () => {
-    // fallback: dark placeholder
-    canvas.width = 640;
-    canvas.height = 360;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#1a1a22';
-    ctx.fillRect(0, 0, 640, 360);
-  });
-
-  // Use IntersectionObserver to defer video load
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      video.load();
-      observer.disconnect();
-    }
-  }, { rootMargin: '400px' });
-  observer.observe(canvas);
-
-  return canvas;
+  video.preload = 'metadata';
+  video.muted = true;
+  video.playsInline = true;
+  video.style.width = '100%';
+  video.style.display = 'block';
+  video.style.cursor = 'pointer';
+  // Seek to first frame once metadata loads
+  video.addEventListener('loadedmetadata', () => { video.currentTime = 0.01; });
+  return video;
 }
 
 // ── Modal ─────────────────────────────────────────────────

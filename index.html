@@ -79,25 +79,46 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 28px;
-    padding: 6px 16px 6px 0;
-    border-bottom: 2px solid var(--border);
+    margin-bottom: 24px;
+    padding: 0 0 10px 0;
+    border-bottom: 2px solid var(--text);
     width: 100%;
   }
 
-  .category-label-text {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
+  .category-label-name {
+    font-size: 22px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    color: var(--text);
+  }
+
+  /* Subcategory */
+  .subcategory-section {
+    margin-bottom: 32px;
+  }
+
+  .subcategory-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .subcategory-label-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: var(--text-muted);
     text-transform: uppercase;
   }
 
-  .category-label-name {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
+  .subcategory-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--border);
+    margin-left: auto;
   }
 
   .users-grid {
@@ -318,26 +339,47 @@ function createUserCard(user, index) {
 function render() {
   const main = document.getElementById('main');
 
-  for (const [categoryName, users] of Object.entries(userCategories)) {
+  for (const [categoryName, subcategories] of Object.entries(userCategories)) {
     const section = document.createElement('section');
     section.className = 'category-section';
 
+    // 一级标题
     const label = document.createElement('div');
     label.className = 'category-label';
-    label.innerHTML = `
-      <span class="category-label-name">${categoryName}</span>
-      <span class="category-label-text">${users.length} users</span>
-    `;
-
-    const grid = document.createElement('div');
-    grid.className = 'users-grid';
-
-    users.forEach((user, i) => {
-      grid.appendChild(createUserCard(user, i));
-    });
-
+    label.innerHTML = `<span class="category-label-name">${categoryName}</span>`;
     section.appendChild(label);
-    section.appendChild(grid);
+
+    // 判断是否有二级分类（值是对象而不是数组）
+    const hasSubcategories = !Array.isArray(subcategories);
+
+    if (hasSubcategories) {
+      for (const [subName, users] of Object.entries(subcategories)) {
+        const subSection = document.createElement('div');
+        subSection.className = 'subcategory-section';
+
+        const subLabel = document.createElement('div');
+        subLabel.className = 'subcategory-label';
+        subLabel.innerHTML = `
+          <span class="subcategory-label-name">${subName}</span>
+          <span class="subcategory-count">${users.length}</span>
+        `;
+
+        const grid = document.createElement('div');
+        grid.className = 'users-grid';
+        users.forEach(user => grid.appendChild(createUserCard(user)));
+
+        subSection.appendChild(subLabel);
+        subSection.appendChild(grid);
+        section.appendChild(subSection);
+      }
+    } else {
+      // 兼容旧的一级结构（值是数组）
+      const grid = document.createElement('div');
+      grid.className = 'users-grid';
+      subcategories.forEach(user => grid.appendChild(createUserCard(user)));
+      section.appendChild(grid);
+    }
+
     main.appendChild(section);
   }
 }
