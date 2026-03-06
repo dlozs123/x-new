@@ -1120,6 +1120,46 @@ function buildSidebar(tweets) {
   });
 }
 
+function highlightSidebarDate(dateStr) {
+  // dateStr: "20180724"
+  const year = dateStr.slice(0, 4);
+  const month = parseInt(dateStr.slice(4, 6));
+  const day = parseInt(dateStr.slice(6, 8));
+
+  // Find and expand year button
+  const yearBtns = document.querySelectorAll('.tree-btn.year-btn');
+  yearBtns.forEach(btn => {
+    if (btn.textContent.startsWith(year)) {
+      if (btn.getAttribute('aria-expanded') !== 'true') btn.click();
+
+      // Find month button inside
+      setTimeout(() => {
+        const monthNames = ['一','二','三','四','五','六','七','八','九','十','十一','十二'];
+        const monthName = monthNames[month - 1] + '月';
+        const monthBtns = btn.parentElement.querySelectorAll('.tree-btn.month-btn');
+        monthBtns.forEach(mb => {
+          if (mb.textContent.trim().startsWith(monthName)) {
+            if (mb.getAttribute('aria-expanded') !== 'true') mb.click();
+
+            // Find and highlight day button
+            setTimeout(() => {
+              const dayBtns = mb.parentElement.querySelectorAll('.tree-btn.day-btn');
+              dayBtns.forEach(db => {
+                if (db.textContent.trim() === `${day}日`) {
+                  db.style.color = 'var(--accent)';
+                  db.style.fontWeight = '700';
+                  db.style.background = 'rgba(58,120,212,0.10)';
+                  db.scrollIntoView({ block: 'nearest' });
+                }
+              });
+            }, 50);
+          }
+        });
+      }, 50);
+    }
+  });
+}
+
 function scrollToTweet(idx) {
   // 先确保目标推文已渲染
   if (window._renderUntil) window._renderUntil(idx);
@@ -1135,7 +1175,7 @@ function scrollToTweet(idx) {
   }
 }
 
-// ── Sidebar collapse ─────────────────────────────────────
+// ── Sidebar collapse (desktop) ────────────────────────────
 
 (function() {
   const btn = document.getElementById('sidebarCollapseBtn');
@@ -1149,6 +1189,24 @@ function scrollToTweet(idx) {
     btn.title = collapsed ? '展开侧边栏' : '收起侧边栏';
   });
 })();
+
+// ── Sidebar toggle (mobile) ───────────────────────────────
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('mobile-open');
+}
+
+// Close mobile sidebar when clicking outside
+document.addEventListener('click', (e) => {
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('sidebarToggle');
+  if (sidebar.classList.contains('mobile-open') &&
+      !sidebar.contains(e.target) &&
+      e.target !== toggle && !toggle.contains(e.target)) {
+    sidebar.classList.remove('mobile-open');
+  }
+});
 
 // ── Header ────────────────────────────────────────────────
 
@@ -1196,12 +1254,17 @@ async function main() {
     const all = await loadAllTweets();
     setLoading('过滤推文...');
 
-    const tweets = Array.from(
-      all
-        .filter(t => t.screen_name === screenName)
-        .reduce((map, t) => { if (!map.has(t.id)) map.set(t.id, t); return map; }, new Map())
-        .values()
-    ).sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at));
+    const hasTco = t => /https:\/\/t\.co\/[A-Za-z0-9]+/.test(t.full_text || '');
+    const deduped = new Map();
+    all.filter(t => t.screen_name === screenName).forEach(t => {
+      if (!deduped.has(t.id)) {
+        deduped.set(t.id, t);
+      } else if (hasTco(t) && !hasTco(deduped.get(t.id))) {
+        deduped.set(t.id, t); // 替换为有短链的版本
+      }
+    });
+    const tweets = Array.from(deduped.values())
+      .sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at));
 
     renderHeader(screenName, tweets);
 
@@ -1226,6 +1289,10 @@ async function main() {
     renderBatch();
     buildSidebar(tweets);
     hideLoading();
+
+    // 搜索跳转高亮：?highlight=YYYYMMDD
+    const hlDate = getParam('highlight');
+    if (hlDate) highlightSidebarDate(hlDate);
 
     // 滚动到底部时追加下一批
     window.addEventListener('scroll', () => {

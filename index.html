@@ -40,11 +40,228 @@
     background: rgba(232,232,232,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    padding: 20px 40px;
+    padding: 14px 40px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    flex-wrap: wrap;
   }
+
+  .header-brand { flex-shrink: 0; }
+
+  /* Search */
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    max-width: 480px;
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 8px 36px 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: #fff;
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(58,120,212,0.12);
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .search-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    position: absolute;
+    left: 14px;
+    bottom: -16px;
+    white-space: nowrap;
+  }
+
+  /* Search results panel */
+  .search-results {
+    display: none;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    padding: 16px;
+    margin: 12px 40px 0;
+    max-width: 960px;
+  }
+  .search-results.visible { display: block; }
+
+  .search-results-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-results-header strong { color: var(--text); }
+
+  .results-users-wrap {
+    position: relative;
+  }
+
+  .results-users {
+    display: flex;
+    gap: 12px;
+    overflow: hidden;
+    flex-direction: column;
+  }
+
+  /* Each user result group */
+  .result-user-group {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .result-user-group:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(58,120,212,0.1);
+  }
+
+  .result-user-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .result-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+  .result-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .result-avatar .av-fb {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .result-user-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .result-user-handle {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .result-count-badge {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(58,120,212,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Tweet snippets under each user */
+  .result-tweets {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .result-tweet-item {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .result-tweet-item:hover { border-color: var(--accent); }
+
+  .result-tweet-text {
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .result-tweet-text mark {
+    background: rgba(58,120,212,0.2);
+    color: var(--text);
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  .result-tweet-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  /* Show more button */
+  .show-more-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    display: none;
+  }
+  .show-more-btn:hover { background: var(--bg); color: var(--accent); }
+  .show-more-btn.visible { display: block; }
 
   .site-title {
     font-family: 'Space Mono', monospace;
@@ -256,21 +473,29 @@
 <body>
 
 <header class="site-header">
-  <div>
+  <div class="header-brand">
     <div class="site-title">推文归档</div>
     <div class="site-subtitle">Twitter Archive</div>
   </div>
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="搜索推文正文…" autocomplete="off">
+    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <span class="search-status" id="searchStatus"></span>
+  </div>
 </header>
+<div class="search-results" id="searchResults"></div>
 
 <main class="main" id="main"></main>
 
 <script src="userData.js"></script>
 <script>
 const AVATAR_BASE = 'https://r4.dlozs.top/images';
+const API_BASE = 'https://e.dlozs.top';
 const gradients = ['grad-0','grad-1','grad-2','grad-3','grad-4','grad-5','grad-6','grad-7'];
 
 function getInitial(name) {
-  // Get first non-emoji meaningful char
   const clean = name.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
   return clean[0] || '?';
 }
@@ -280,6 +505,234 @@ function hashStr(s) {
   for (const c of s) h = (h * 31 + c.charCodeAt(0)) & 0xffffffff;
   return Math.abs(h);
 }
+
+// 从 userData.js 按顺序提取所有用户（含分类信息）
+function getAllUsersOrdered() {
+  const result = [];
+  for (const [cat, val] of Object.entries(userCategories)) {
+    if (Array.isArray(val)) {
+      val.forEach(u => result.push({ ...u, cat, subCat: null }));
+    } else {
+      for (const [sub, users] of Object.entries(val)) {
+        users.forEach(u => result.push({ ...u, cat, subCat: sub }));
+      }
+    }
+  }
+  return result;
+}
+
+// ── Background JSON loading ───────────────────────────────
+
+let allTweets = null;        // null = 未加载，[] = 加载完成
+let loadingPromise = null;
+
+function startBackgroundLoad() {
+  const status = document.getElementById('searchStatus');
+  status.textContent = '正在加载搜索数据…';
+
+  loadingPromise = (async () => {
+    try {
+      const indexRes = await fetch(`${API_BASE}/index.json`);
+      const { files } = await indexRes.json();
+      const results = await Promise.all(
+        files.map(f => fetch(`${API_BASE}/${f}`).then(r => r.json()).catch(() => []))
+      );
+      allTweets = results.flat();
+      status.textContent = `搜索就绪 · ${allTweets.length} 条推文`;
+      setTimeout(() => { status.textContent = ''; }, 3000);
+    } catch (e) {
+      status.textContent = '搜索数据加载失败';
+      allTweets = [];
+    }
+  })();
+}
+
+// ── Search ────────────────────────────────────────────────
+
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function highlightText(text, query) {
+  const re = new RegExp(`(${escapeRegex(query)})`, 'gi');
+  return text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(re, '<mark>$1</mark>');
+}
+
+function compactDate(created_at) {
+  const d = new Date(created_at.trim().replace(' ', 'T').replace(' ', ''));
+  return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function fmtShortDate(created_at) {
+  const d = new Date(created_at.trim().replace(' ', 'T').replace(' ', ''));
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function makeResultAvatar(screenName, name) {
+  const wrap = document.createElement('div');
+  wrap.className = 'result-avatar';
+  const img = document.createElement('img');
+  img.alt = name;
+  img.src = `${AVATAR_BASE}/${screenName}.jpg`;
+  const fb = document.createElement('div');
+  fb.className = `av-fb ${gradients[hashStr(screenName) % gradients.length]}`;
+  fb.textContent = getInitial(name);
+  fb.style.display = 'none';
+  img.onerror = () => { img.style.display = 'none'; fb.style.display = 'flex'; };
+  wrap.appendChild(img);
+  wrap.appendChild(fb);
+  return wrap;
+}
+
+let searchDebounce = null;
+
+function doSearch(query) {
+  const panel = document.getElementById('searchResults');
+  query = query.trim();
+
+  if (!query) {
+    panel.classList.remove('visible');
+    panel.innerHTML = '';
+    return;
+  }
+
+  if (allTweets === null) {
+    panel.classList.add('visible');
+    panel.innerHTML = `<div class="search-results-header">数据加载中，请稍候…</div>`;
+    // 等加载完再搜
+    loadingPromise.then(() => doSearch(document.getElementById('searchInput').value));
+    return;
+  }
+
+  const q = query.toLowerCase();
+  // 按用户分组，保持 userData.js 顺序
+  const orderedUsers = getAllUsersOrdered();
+  const grouped = []; // [{user, tweets:[]}]
+
+  orderedUsers.forEach(u => {
+    const matched = allTweets.filter(t =>
+      t.screen_name === u.screenName &&
+      (t.full_text || '').toLowerCase().includes(q)
+    );
+    if (matched.length > 0) {
+      // 每个用户取最多5条，按时间新→旧
+      matched.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      grouped.push({ user: u, tweets: matched.slice(0, 5), total: matched.length });
+    }
+  });
+
+  panel.innerHTML = '';
+
+  if (grouped.length === 0) {
+    panel.classList.add('visible');
+    panel.innerHTML = `<div class="search-results-header">未找到包含 <strong>"${query}"</strong> 的推文</div>`;
+    return;
+  }
+
+  panel.classList.add('visible');
+
+  const header = document.createElement('div');
+  header.className = 'search-results-header';
+  header.innerHTML = `找到 <strong>${grouped.length}</strong> 位用户的相关推文`;
+  panel.appendChild(header);
+
+  const usersWrap = document.createElement('div');
+  usersWrap.className = 'results-users';
+  panel.appendChild(usersWrap);
+
+  const INITIAL_SHOW = 3;
+
+  grouped.forEach((group, idx) => {
+    const { user, tweets, total } = group;
+    const groupEl = document.createElement('div');
+    groupEl.className = 'result-user-group';
+    if (idx >= INITIAL_SHOW) groupEl.style.display = 'none';
+
+    // User header
+    const userHeader = document.createElement('div');
+    userHeader.className = 'result-user-header';
+    userHeader.appendChild(makeResultAvatar(user.screenName, user.name));
+
+    const nameWrap = document.createElement('div');
+    nameWrap.innerHTML = `<div class="result-user-name">${user.name}</div>
+      <div class="result-user-handle">@${user.screenName}</div>`;
+    userHeader.appendChild(nameWrap);
+
+    const badge = document.createElement('span');
+    badge.className = 'result-count-badge';
+    badge.textContent = `${total} 条`;
+    userHeader.appendChild(badge);
+    groupEl.appendChild(userHeader);
+
+    // Tweet snippets
+    const tweetsEl = document.createElement('div');
+    tweetsEl.className = 'result-tweets';
+
+    tweets.forEach(tweet => {
+      const item = document.createElement('div');
+      item.className = 'result-tweet-item';
+
+      const textEl = document.createElement('div');
+      textEl.className = 'result-tweet-text';
+      textEl.innerHTML = highlightText(tweet.full_text || '', query);
+
+      const dateEl = document.createElement('div');
+      dateEl.className = 'result-tweet-date';
+      dateEl.textContent = fmtShortDate(tweet.created_at);
+
+      item.appendChild(textEl);
+      item.appendChild(dateEl);
+
+      const dateCode = compactDate(tweet.created_at);
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.href = `user.html?user=${encodeURIComponent(user.screenName)}&highlight=${dateCode}`;
+      });
+
+      tweetsEl.appendChild(item);
+    });
+
+    groupEl.appendChild(tweetsEl);
+    usersWrap.appendChild(groupEl);
+  });
+
+  // Show more button
+  if (grouped.length > INITIAL_SHOW) {
+    const btn = document.createElement('button');
+    btn.className = 'show-more-btn visible';
+    btn.textContent = `展开剩余 ${grouped.length - INITIAL_SHOW} 位用户 ▾`;
+    let expanded = false;
+    btn.addEventListener('click', () => {
+      expanded = !expanded;
+      usersWrap.querySelectorAll('.result-user-group').forEach((el, i) => {
+        if (i >= INITIAL_SHOW) el.style.display = expanded ? 'block' : 'none';
+      });
+      btn.textContent = expanded
+        ? `收起 ▴`
+        : `展开剩余 ${grouped.length - INITIAL_SHOW} 位用户 ▾`;
+    });
+    panel.appendChild(btn);
+  }
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => doSearch(e.target.value), 300);
+});
+
+// Close search results when clicking outside
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('searchResults');
+  const input = document.getElementById('searchInput');
+  if (!panel.contains(e.target) && e.target !== input) {
+    panel.classList.remove('visible');
+  }
+});
+document.getElementById('searchInput').addEventListener('focus', () => {
+  const v = document.getElementById('searchInput').value.trim();
+  if (v) doSearch(v);
+});
 
 function createUserCard(user, index) {
   const card = document.createElement('a');
@@ -385,6 +838,9 @@ function render() {
 }
 
 render();
+
+// 页面渲染完成后，后台静默加载所有 JSON
+setTimeout(startBackgroundLoad, 500);
 
 // 保存滚动位置
 window.addEventListener('scroll', () => {
