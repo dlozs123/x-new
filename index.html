@@ -103,9 +103,88 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     padding: 16px;
     margin: 12px 40px 0;
-    max-width: 960px;
+    max-width: 1100px;
   }
-  .search-results.visible { display: block; }
+  .search-results.visible { display: flex; gap: 16px; }
+
+  .search-results-left {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    max-height: 70vh;
+  }
+
+  .search-preview {
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    min-height: 240px;
+    max-height: 70vh;
+    overflow: hidden;
+    position: sticky;
+    top: 80px;
+  }
+
+  .search-preview-empty {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .search-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .search-preview img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  .search-preview video {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .search-preview-meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+  }
+  .search-preview-meta a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .search-preview-meta a:hover {
+    text-decoration: underline;
+  }
+
+  .result-tweet-item.active {
+    border-color: var(--accent);
+    background: rgba(58,120,212,0.06);
+  }
+
+  @media (max-width: 768px) {
+    .search-results.visible { flex-direction: column; }
+    .search-preview { width: 100%; min-height: 160px; position: static; }
+  }
 
   .search-results-header {
     font-family: 'Space Mono', monospace;
@@ -493,7 +572,25 @@
 <script>
 const AVATAR_BASE = 'https://r4.dlozs.top/images';
 const API_BASE = 'https://e.dlozs.top';
+const MEDIA_BASE = 'https://r3.dlozs.top';
 const gradients = ['grad-0','grad-1','grad-2','grad-3','grad-4','grad-5','grad-6','grad-7'];
+
+function getMediaExt(media) {
+  if (media.type === 'video' || media.type === 'animated_gif') return 'mp4';
+  const m = (media.original || '').match(/format=(\w+)/);
+  return m ? m[1] : 'jpg';
+}
+
+function buildMediaUrl(tweet, mediaIdx) {
+  const m = tweet.media[mediaIdx];
+  const sn = tweet.screen_name;
+  const id = tweet.id;
+  const type = m.type;
+  const num = mediaIdx + 1;
+  const date = compactDate(tweet.created_at);
+  const ext = getMediaExt(m);
+  return `${MEDIA_BASE}/${sn}_${id}_${type}_${num}_${date}.${ext}`;
+}
 
 function getInitial(name) {
   const clean = name.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
@@ -626,22 +723,84 @@ function doSearch(query) {
 
   if (grouped.length === 0) {
     panel.classList.add('visible');
-    panel.innerHTML = `<div class="search-results-header">未找到包含 <strong>"${query}"</strong> 的推文</div>`;
+    panel.innerHTML = `<div class="search-results-left"><div class="search-results-header">未找到包含 <strong>"${query}"</strong> 的推文</div></div>`;
     return;
   }
 
   panel.classList.add('visible');
 
+  // Left side: results list
+  const leftDiv = document.createElement('div');
+  leftDiv.className = 'search-results-left';
+
   const header = document.createElement('div');
   header.className = 'search-results-header';
   header.innerHTML = `找到 <strong>${grouped.length}</strong> 位用户的相关推文`;
-  panel.appendChild(header);
+  leftDiv.appendChild(header);
 
   const usersWrap = document.createElement('div');
   usersWrap.className = 'results-users';
-  panel.appendChild(usersWrap);
+  leftDiv.appendChild(usersWrap);
+
+  // Right side: preview panel
+  const previewDiv = document.createElement('div');
+  previewDiv.className = 'search-preview';
+  previewDiv.id = 'searchPreview';
+  previewDiv.innerHTML = `<div class="search-preview-empty">👆 点击左侧推文<br>预览缩略图</div>`;
+
+  panel.appendChild(leftDiv);
+  panel.appendChild(previewDiv);
 
   const INITIAL_SHOW = 3;
+
+  // Track active item for highlight
+  let activeItem = null;
+
+  function showPreview(tweet, user) {
+    previewDiv.innerHTML = '';
+    const dateCode = compactDate(tweet.created_at);
+    const jumpUrl = `user.html?user=${encodeURIComponent(user.screenName)}&highlight=${dateCode}`;
+
+    if (tweet.media && tweet.media.length > 0) {
+      const m = tweet.media[0];
+      const mediaUrl = buildMediaUrl(tweet, 0);
+      const isVideo = m.type === 'video' || m.type === 'animated_gif';
+
+      if (isVideo) {
+        const video = document.createElement('video');
+        video.src = mediaUrl;
+        video.preload = 'metadata';
+        video.muted = true;
+        video.playsInline = true;
+        video.style.maxWidth = '100%';
+        video.style.borderRadius = '8px';
+        video.style.cursor = 'pointer';
+        video.addEventListener('loadedmetadata', () => { video.currentTime = 0.01; });
+        video.addEventListener('click', () => { window.location.href = jumpUrl; });
+        previewDiv.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = mediaUrl;
+        img.alt = '缩略图';
+        img.addEventListener('click', () => { window.location.href = jumpUrl; });
+        img.onerror = () => {
+          previewDiv.innerHTML = `<div class="search-preview-empty">图片加载失败</div>`;
+          const meta2 = document.createElement('div');
+          meta2.className = 'search-preview-meta';
+          meta2.innerHTML = `<a href="${jumpUrl}">查看推文 →</a>`;
+          previewDiv.appendChild(meta2);
+        };
+        previewDiv.appendChild(img);
+      }
+    } else {
+      previewDiv.innerHTML = `<div class="search-preview-empty">该推文无媒体</div>`;
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'search-preview-meta';
+    meta.innerHTML = `<a href="${jumpUrl}">查看推文 →</a>`;
+    previewDiv.appendChild(meta);
+  }
 
   grouped.forEach((group, idx) => {
     const { user, tweets, total } = group;
@@ -684,10 +843,14 @@ function doSearch(query) {
       item.appendChild(textEl);
       item.appendChild(dateEl);
 
-      const dateCode = compactDate(tweet.created_at);
       item.addEventListener('click', (e) => {
         e.stopPropagation();
-        window.location.href = `user.html?user=${encodeURIComponent(user.screenName)}&highlight=${dateCode}`;
+        // Highlight active item
+        if (activeItem) activeItem.classList.remove('active');
+        item.classList.add('active');
+        activeItem = item;
+        // Show preview
+        showPreview(tweet, user);
       });
 
       tweetsEl.appendChild(item);
@@ -712,7 +875,7 @@ function doSearch(query) {
         ? `收起 ▴`
         : `展开剩余 ${grouped.length - INITIAL_SHOW} 位用户 ▾`;
     });
-    panel.appendChild(btn);
+    leftDiv.appendChild(btn);
   }
 }
 
