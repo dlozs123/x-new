@@ -338,6 +338,40 @@
     color: var(--text-muted);
   }
 
+  /* 拼图小按钮 */
+  .stitch-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    padding: 1px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--accent);
+    background: rgba(58, 120, 212, 0.08);
+    border: 1px solid rgba(58, 120, 212, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    vertical-align: baseline;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .stitch-btn:hover {
+    background: rgba(58, 120, 212, 0.16);
+    border-color: var(--accent);
+  }
+  .stitch-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .stitch-btn.too-many {
+    color: var(--text-muted);
+    background: var(--surface2);
+    border-color: var(--border);
+  }
+
   /* Media - full width of tweet, outside avatar indent */
   .tweet-media {
     display: flex;
@@ -346,6 +380,46 @@
     margin: 10px 0 10px 0;
     border-radius: 10px;
     overflow: hidden;
+  }
+
+  /* 横向无间隙拼接模式 */
+  .tweet-media.stitched {
+    flex-direction: row;
+    gap: 0;
+    align-items: flex-start;
+  }
+  .tweet-media.stitched .media-item {
+    min-width: 0;
+    border-radius: 0;
+    margin: 0;
+    background: transparent;
+  }
+  .tweet-media.stitched .media-item img,
+  .tweet-media.stitched .media-item video {
+    width: 100%;
+    height: auto !important;
+    display: block;
+  }
+
+  /* 多图展开/收起按钮 */
+  .media-expand-btn {
+    width: 100%;
+    padding: 9px 12px;
+    margin-top: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .media-expand-btn:hover {
+    background: var(--surface2);
+    border-color: var(--accent);
   }
 
   .media-item {
@@ -936,7 +1010,9 @@ function createTweetEl(tweet, dateAnchors) {
   if (processed) textEl.innerHTML = processed;
 
   body.appendChild(meta);
-  if (processed) body.appendChild(textEl);
+  if (processed || (tweet.media && tweet.media.length > 1)) {
+    body.appendChild(textEl);
+  }
 
   inner.appendChild(avatarDiv);
   inner.appendChild(body);
@@ -946,6 +1022,9 @@ function createTweetEl(tweet, dateAnchors) {
   if (tweet.media && tweet.media.length > 0) {
     const mediaWrap = document.createElement('div');
     mediaWrap.className = 'tweet-media';
+    const mediaCount = tweet.media.length;
+    const MAX_VISIBLE_MEDIA = 4;
+    const extraItems = [];
 
     tweet.media.forEach((m, idx) => {
       const mediaUrl = buildMediaUrl(tweet, idx);
@@ -953,6 +1032,10 @@ function createTweetEl(tweet, dateAnchors) {
 
       const item = document.createElement('div');
       item.className = 'media-item';
+      if (idx >= MAX_VISIBLE_MEDIA) {
+        item.style.display = 'none';
+        extraItems.push(item);
+      }
 
       if (isVideo) {
         const thumb = makeVideoThumbnail(mediaUrl);
@@ -972,6 +1055,105 @@ function createTweetEl(tweet, dateAnchors) {
     });
 
     container.appendChild(mediaWrap);
+
+    // 超过4张图片时，只显示前4张，并添加“展开”按钮显示剩下的
+    if (mediaCount > MAX_VISIBLE_MEDIA) {
+      const expandBtn = document.createElement('button');
+      expandBtn.type = 'button';
+      expandBtn.className = 'media-expand-btn';
+      const remainCount = mediaCount - MAX_VISIBLE_MEDIA;
+      expandBtn.textContent = `展开剩余 ${remainCount} 张图片 (共 ${mediaCount} 张) ▾`;
+      let isExpanded = false;
+      expandBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        extraItems.forEach(el => {
+          el.style.display = isExpanded ? '' : 'none';
+        });
+        expandBtn.textContent = isExpanded
+          ? `收起多余图片 ▴`
+          : `展开剩余 ${remainCount} 张图片 (共 ${mediaCount} 张) ▾`;
+      });
+      container.appendChild(expandBtn);
+    }
+
+    // 在“原推文”右边加一个横向拼接小按钮（多于1张媒体时提供，超过4张点击显示“图片过多”）
+    if (mediaCount > 1) {
+      const stitchBtn = document.createElement('button');
+      stitchBtn.type = 'button';
+      stitchBtn.className = 'stitch-btn';
+      stitchBtn.textContent = '横向拼接';
+      stitchBtn.title = '将图片从上到下依次从左到右无间隙横向拼接';
+
+      stitchBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (mediaCount > 4) {
+          stitchBtn.textContent = '图片过多';
+          stitchBtn.classList.add('too-many');
+          return;
+        }
+        const isStitched = mediaWrap.classList.toggle('stitched');
+        stitchBtn.classList.toggle('active', isStitched);
+        stitchBtn.textContent = isStitched ? '恢复纵向' : '横向拼接';
+
+        // 拼接时：
+        // 1) 按每块媒体的真实宽高比 (width / height) 动态设置 flex-grow，使高度不同或宽度不等的切片都能等高严密拼接
+        // 2) 若含 animated_gif (mp4)，自动循环静音播放并隐藏播放图标，使整幅画面自然衔接
+        const updateStitchRatios = () => {
+          if (!mediaWrap.classList.contains('stitched')) {
+            mediaWrap.querySelectorAll('.media-item').forEach(el => {
+              el.style.flex = '';
+            });
+            return;
+          }
+          mediaWrap.querySelectorAll('.media-item').forEach(itemEl => {
+            const img = itemEl.querySelector('img');
+            const vid = itemEl.querySelector('video');
+            let w = 0, h = 0;
+            if (img && img.naturalWidth && img.naturalHeight) {
+              w = img.naturalWidth;
+              h = img.naturalHeight;
+            } else if (vid && vid.videoWidth && vid.videoHeight) {
+              w = vid.videoWidth;
+              h = vid.videoHeight;
+            }
+            const ratio = (w > 0 && h > 0) ? (w / h) : 1;
+            itemEl.style.flex = `${ratio} 1 0%`;
+          });
+        };
+
+        updateStitchRatios();
+
+        mediaWrap.querySelectorAll('.media-item').forEach((itemEl, i) => {
+          const img = itemEl.querySelector('img');
+          const vid = itemEl.querySelector('video');
+          if (img && !img.complete) {
+            img.addEventListener('load', updateStitchRatios, { once: true });
+          }
+          if (vid && vid.readyState < 1) {
+            vid.addEventListener('loadedmetadata', updateStitchRatios, { once: true });
+          }
+
+          const mType = tweet.media[i] && tweet.media[i].type;
+          if (mType === 'animated_gif') {
+            const overlay = itemEl.querySelector('.play-overlay');
+            if (isStitched) {
+              if (overlay) overlay.style.display = 'none';
+              if (vid) { vid.loop = true; vid.muted = true; vid.play().catch(() => {}); }
+            } else {
+              if (overlay) overlay.style.display = '';
+              if (vid) { vid.pause(); vid.currentTime = 0.01; }
+            }
+          }
+        });
+      });
+
+      const origLink = textEl.querySelector('.orig-link');
+      if (origLink) {
+        origLink.insertAdjacentElement('afterend', stitchBtn);
+      } else {
+        textEl.appendChild(stitchBtn);
+      }
+    }
   }
 
   // Actions after media
